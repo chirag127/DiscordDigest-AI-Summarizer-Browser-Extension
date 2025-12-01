@@ -1,18 +1,37 @@
 {
-  "name": "discord-summarizer",
-  "version": "1.0.0",
-  "description": "Chrome extension to summarize unread Discord messages using Google Gemini-2.0 Flash",
-  "main": "index.js",
+  "name": "discord-digest",
+  "description": "AI-Powered Unread Message Summaries Inside Discord",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:backend": "cd backend && npm start"
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "test": "vitest",
+    "postinstall": "wxt prepare"
   },
-  "keywords": [
-    "discord",
-    "summarizer",
-    "chrome-extension",
-    "gemini"
-  ],
-  "author": "",
-  "license": "MIT"
+  "dependencies": {
+    "@google/genai": "^1.30.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
+    "@playwright/test": "^1.57.0",
+    "@types/chrome": "^0.0.263",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.22",
+    "happy-dom": "^20.0.11",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.4.0",
+    "vitest": "^4.0.14",
+    "wxt": "^0.19.0"
+  }
 }
