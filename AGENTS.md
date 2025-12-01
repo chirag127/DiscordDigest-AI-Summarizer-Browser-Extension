@@ -8,155 +8,71 @@
 
 ---
 
-## 2. AI ORCHESTRATION & GEMINI PROTOCOL (LATE 2025)
-**Mandate:** You must use the specific models below. Strictly follow this **Fallback Cascade**. Always try the smartest model first.
-* **Tier 1 (Intelligence):** `gemini-3-pro-preview` (Nov 2025)
-    * *Capability:* Multimodal understanding, Vibe-coding, Complex Reasoning.
-    * *Context:* 1M Input / 65k Output.
-* **Tier 2 (Reasoning/STEM):** `gemini-2.5-pro` (Stable)
-    * *Capability:* Advanced thinking, Codebases, Math.
-    * *Context:* 1M Input / 65k Output.
-* **Tier 3 (Balanced Speed):** `gemini-2.5-flash` (Stable)
-    * *Capability:* Large scale processing, Agentic use cases.
-    * *Context:* 1M Input / 65k Output.
-* **Tier 4 (Ultra-Fast/Cost):** `gemini-2.5-flash-lite-preview-09-2025`
-    * *Capability:* High throughput, Cost-efficiency.
-    * *Context:* 1M Input / 65k Output.
-* **Tier 5 (Legacy/Specialized):**
-    * `gemini-2.0-flash` (Workhorse fallback).
-    * `gemini-2.5-flash-native-audio-preview-09-2025` (Audio I/O).
-* **Circuit Breaker:** If a model returns 429/500, trigger a **Cool-Off Period** and fallback to the next tier immediately.
-* **Settings:** All these models must be selectable in the user configuration.
+## 2. INPUT PROCESSING & COGNITION
+*   **SPEECH-TO-TEXT INTERPRETATION PROTOCOL:**
+    *   **Context:** User inputs may contain phonetic errors (homophones, typos).
+    *   **Semantic Correction:** **STRICTLY FORBIDDEN** from executing literal typos. You must **INFER** technical intent based on the project context.
+    *   **Logic Anchor:** Treat the `README.md` as the **Single Source of Truth (SSOT)**.
+*   **MANDATORY MCP INSTRUMENTATION:**
+    *   **No Guessing:** Do not hallucinate APIs.
+    *   **Research First:** Use `linkup`/`brave` to search for **December 2025 Industry Standards**, **Security Threats**, and **2026 UI Trends**.
+    *   **Validation:** Use `docfork` to verify *every* external API signature.
+    *   **Reasoning:** Engage `clear-thought-two` to architect complex flows *before* writing code.
 
 ---
 
 ## 3. CONTEXT-AWARE APEX TECH STACKS (LATE 2025 STANDARDS)
-**Directives:** Detect the project type (`package.json`, `Cargo.toml`, `pyproject.toml`) and apply the corresponding **Apex Toolchain**.
-* **SCENARIO A: WEB / APP / EXTENSION (TypeScript)**
-    * **Stack:** **TypeScript 6.x** (Strict), **Vite 7** (Rolldown), **Tauri v2.x** (Native), **WXT** (Extensions).
-    * **State:** **Signals** (Standardized).
-    * **Lint/Test:** **Biome** (Speed) + **Vitest** (Unit) + **Playwright** (E2E).
-* **SCENARIO B: SYSTEMS / PERFORMANCE (Rust/Go)**
-    * **Stack:** **Rust 1.8x** (Cargo) or **Go 1.2x**.
-    * **Lint:** **Clippy** / **GolangCI-Lint**.
-* **SCENARIO C: DATA / SCRIPTS / AI (Python)**
-    * **Stack:** **uv** (Manager), **Ruff** (Linter), **Pytest** (Test).
+**Directives:** This project is a client-side browser extension. The toolchain is defined for maximum speed, type safety, and portability.
+
+*   **PRIMARY SCENARIO: WEB / EXTENSION / UI (TypeScript)**
+    *   **Project Name:** `DiscordDigest-AI-Summarizer-Browser-Extension`
+    *   **Stack:** Leverages **TypeScript 6.x** (with `strict` mode enforced), **React 19** (Hooks and Server Components adaptation where applicable, though primarily client-side), and **Vite 7** (using Rolldown for optimal bundling). **WXT (Web Extension Toolkit)** handles cross-browser manifest generation and development lifecycle.
+    *   **Styling:** **TailwindCSS v4** (JIT mode) for utility-first styling and rapid UI development.
+    *   **Architecture:** Adheres to a modified **Feature-Sliced Design (FSD)** pattern, structuring code around:
+        1.  `app`: Global setup (manifest, main entry).
+        2.  `pages`: Popup/Options UI views.
+        3.  `features`: Specific business logic (e.g., Summary Generation, Settings).
+        4.  `entities`: Domain models (e.g., Discord Message structure).
+        5.  `shared`: Utility functions, components, and hooks.
+    *   **LLM Integration:** Direct, zero-backend integration with **Google Gemini API** (via WXT Content Script communication layer) for client-side message summarization. **CRITICAL:** All API keys and sensitive data must reside in secure local storage or environment variables, never hardcoded.
+
+*   **SECONDARY SCENARIO B: SYSTEMS / PERFORMANCE (Reference Only)**
+    *   *Not applicable.*
+
+*   **SECONDARY SCENARIO C: DATA / SCRIPTS / AI (Reference Only)**
+    *   *Not applicable.*
 
 ---
 
-## 4. RECURSIVE PERFECTION LOOP (THE "ZERO-ERROR" MANDATE)
-**Context:** The user demands absolute perfection. You must not stop until the codebase is pristine.
-**The Loop:**
-1.  **Analyze:** Scan the codebase.
-2.  **Fix:** Apply architectural patterns and fixes.
-3.  **Lint/Format:** Run `biome check --apply` / `ruff check --fix`.
-4.  **Test:** Run `vitest` / `pytest`.
-5.  **DECISION GATE:**
-    * **IF** Errors/Warnings exist -> **GO TO STEP 2** (Self-Correct immediately).
-    * **IF** Clean -> **COMMIT** and Present.
-**Constraint:** **DO NOT STOP** until the build is perfectly clean.
+## 4. CODE INTEGRITY & TESTING PROTOCOL
+*   **Linter/Formatter:** **Biome** (Enforced formatting and aggressive linting for performance and error prevention).
+*   **Unit Testing:** **Vitest** (Parallelized execution for rapid feedback). Coverage must exceed 90% for core logic (`features`/`entities`).
+*   **E2E Testing:** **Playwright** (Testing interaction with the Discord UI and ensuring WXT content script injection/messaging works across browsers).
+*   **Type Checking:** **TypeScript 6.x** must pass strict checking (`tsc --noEmit`).
+
+### 4.1 AGENT Verification Commands
+The following commands MUST execute successfully before any merge:
+
+| Command | Purpose |
+| :--- | :--- |
+| `npm install` | Setup environment with dependency resolution. |
+| `npm run build` | Compiles extension for production and validates manifest integrity. |
+| `npm run check:type` | Runs strict TypeScript compiler check (`tsc --noEmit`). |
+| `npm run lint:fix` | Runs Biome to format and fix basic linting errors automatically. |
+| `npm run test:unit` | Executes all Vitest unit tests (minimum 90% coverage required). |
+| `npm run test:e2e` | Executes Playwright end-to-end tests for core UI interactions. |
 
 ---
 
-## 5. CORE ARCHITECTURAL PRINCIPLES
-* **SOLID MANDATE:** SRP, OCP, LSP, ISP, DIP.
-* **MODULARITY:** Feature-First Structure (`features/auth`), not type.
-* **CQS:** Methods must be **Commands** (Action) or **Queries** (Data), never both.
-* **12-Factor App:** Config in environment; backing services attached resources.
+## 5. REPOSITORY METADATA STANDARDS
+*   **Repository URL:** `https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension`
+*   **License:** CC BY-NC 4.0 (Non-Commercial Required).
+*   **Required Files (Standard 11):** `README.md`, `PROPOSED_README.md`, `badges.yml`, `LICENSE`, `.gitignore`, `.github/workflows/ci.yml`, `.github/CONTRIBUTING.md`, `.github/ISSUE_TEMPLATE/bug_report.md`, `.github/PULL_REQUEST_TEMPLATE.md`, `.github/SECURITY.md`, `AGENTS.md` (Self-reference).
 
 ---
 
-## 6. CODE HYGIENE & STANDARDS (READABILITY FIRST)
-* **SEMANTIC NAMING PROTOCOL:**
-    * **Descriptive Verbs:** `calculateWeeklyPay` (Good) vs `calc` (Bad).
-    * **Casing:** `camelCase` (JS/TS), `snake_case` (Python), `PascalCase` (Classes).
-* **CLEAN CODE RULES:**
-    * **Verticality:** Optimize for reading down.
-    * **No Nesting:** Use **Guard Clauses** (`return early`).
-    * **DRY & KISS:** Automate repetitive tasks. Keep logic simple.
-    * **Zero Comments:** Code must be **Self-Documenting**. Use comments *only* for "Why".
-
----
-
-## 7. RELIABILITY, SECURITY & SUSTAINABILITY
-* **DEVSECOPS PROTOCOL:**
-    * **Zero Trust:** Sanitize **ALL** inputs (OWASP Top 10 2025).
-    * **Supply Chain:** Generate **SBOMs** for all builds.
-    * **Fail Fast:** Throw errors immediately on invalid state.
-    * **Encryption:** Secure sensitive data at rest and in transit.
-* **EXCEPTION HANDLING:**
-    * **Resilience:** App must **NEVER** crash. Wrap critical I/O in `try-catch-finally`.
-    * **Recovery:** Implement retry logic with exponential backoff.
-* **GREEN SOFTWARE:**
-    * **Rule of Least Power:** Choose the lightest tool for the job.
-    * **Efficiency:** Optimize loops ($O(n)$ over $O(n^2)$).
-    * **Lazy Loading:** Load resources only when needed.
-
----
-
-## 8. COMPREHENSIVE TESTING STRATEGY
-* **FOLDER SEPARATION PROTOCOL:**
-    * **Production Purity:** Source folder is for code ONLY.
-    * **Mirror Structure:** Tests reside exclusively in `tests/`.
-* **TESTING PYRAMID (F.I.R.S.T.):**
-    * **Fast:** Tests run in milliseconds.
-    * **Isolated:** No external dependencies (Mock DB/Network).
-    * **Repeatable:** Deterministic results.
-* **COVERAGE MANDATE:**
-    * **1:1 Mapping:** Every source file **MUST** have a corresponding test file.
-    * **Scenario Coverage:** Test **Success**, **Failure**, and **Edge Cases**.
-    * **Zero-Error Standard:** Software must run with 0 console errors.
-
----
-
-## 9. UI/UX AESTHETIC SINGULARITY (2026 STANDARD)
-* **VISUAL LANGUAGE:**
-    * **Style:** Blend **Liquid Glass** + **Neo-Brutalist** + **Material You 3.0**.
-    * **Motion:** **MANDATORY** fluid animations (`transition: all 0.2s`).
-* **PERFORMANCE UX:**
-    * **INP Optimization:** Interaction to Next Paint < 200ms.
-    * **Optimistic UI:** UI updates instantly; server syncs in background.
-* **INTERACTION DESIGN:**
-    * **Hyper-Personalization:** Adapt layouts based on user behavior.
-    * **Micro-interactions:** Every click/hover must have feedback.
-* **HYPER-CONFIGURABILITY:**
-    * **Mandate:** Every feature/color must be user-configurable via Settings.
-
----
-
-## 10. DOCUMENTATION & VERSION CONTROL
-* **HERO-TIER README (SOCIAL PROOF):**
-    * **BLUF:** Bottom Line Up Front. Value prop first.
-    * **Live Sync:** Update README **IN THE SAME TURN** as code changes.
-    * **Visuals:** High-Res Badges (Shields.io), ASCII Architecture Trees.
-    * **AI Replication Block:** Include `<details>` with stack info for other agents.
-    * **Social Proof:** Explicitly ask users to **"Star ⭐ this Repo"**.
-* **ADVANCED GIT OPERATIONS:**
-    * **Context Archaeology:** Use `git log`/`git blame`.
-    * **Conventional Commits:** Strict format (`feat:`, `fix:`, `docs:`).
-    * **Semantic Versioning:** Enforce `Major.Minor.Patch`.
-
----
-
-## 11. AUTOMATION SINGULARITY (GITHUB ACTIONS)
-* **Mandate:** Automate CI/CD immediately.
-* **Workflows:** 
-    1.  **Integrity:** Lint + Test on Push.
-    2.  **Security:** Audit dependencies + SBOM.
-    3.  **Release:** Semantic Versioning + Artifact Upload.
-    4.  **Deps:** Auto-merge non-breaking updates.
-
----
-
-## 12. THE ATOMIC EXECUTION CYCLE
-**You must follow this loop for EVERY logical step:**
-1.  **Audit:** Scan state (`ls -R`) & History (`git log`).
-2.  **Research:** Query Best Practices & Trends.
-3.  **Plan:** Architect via `clear-thought-two`.
-4.  **Act:** Fix Code + Polish + Add Settings + Write Tests.
-5.  **Automate:** Create/Update CI/CD YAMLs.
-6.  **Docs:** Update `README.md` (Replication Ready).
-7.  **Verify:** Run Tests & Linters.
-8.  **REITERATE:** If *any* error/warning exists, fix it immediately.
-    **DO NOT STOP** until the build is perfectly clean.
-9.  **Commit:** `git commit` immediately (Only when clean).
+## 6. SECURITY & LLM INTEGRATION PRINCIPLES
+1.  **Zero Trust Architecture:** Since this is a browser extension, assume the host environment is hostile. **Strict Content Security Policy (CSP)** must be enforced via WXT configuration.
+2.  **Client-Side Privacy:** The core value proposition is "privacy-first." **CRITICAL:** Ensure that Discord message content is ONLY processed client-side and ONLY sent to the Gemini API via the user's secure key. NO custom backend processing is permitted.
+3.  **Dependency Hardening:** Use `npm audit` and ensure all dependencies are scanned and vulnerabilities addressed proactively. Only approved, typed, and well-maintained libraries are permitted (e.g., React, WXT).
+4.  **LLM Safety:** Implement output sanitization and injection prevention layers (e.g., ensuring summarized content cannot execute malicious scripts if inserted into the DOM).
