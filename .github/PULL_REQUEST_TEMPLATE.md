@@ -1,51 +1,33 @@
-# Pull Request Template
+## Pull Request Checklist
 
-**IMPORTANT:** Please review the [CONTRIBUTING.md](/.github/CONTRIBUTING.md) guidelines before submitting your Pull Request.
+Before submitting your pull request, please ensure you have completed the following:
 
-## 1. Type of Change
+- [ ] I have read the [CONTRIBUTING.md](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/CONTRIBUTING.md) document.
+- [ ] My code follows the project's coding standards.
+- [ ] I have added or updated relevant tests.
+- [ ] All new and existing tests pass.
+- [ ] I have updated the documentation (if necessary).
+- [ ] I have reviewed my own code for potential issues.
 
-*(Please check the relevant box. If you're unsure, ask!)*
+### Description
 
-*   [ ] **Feature:** A new user-facing feature or enhancement.
-*   [ ] **Bugfix:** A fix for an existing bug.
-*   [ ] **Refactor:** Code change that does not affect functionality.
-*   [ ] **Documentation:** Updates to documentation.
-*   [ ] **Chore:** Maintenance tasks, tooling, build scripts, etc.
-*   [ ] **Performance:** Code optimization.
-*   [ ] **Test:** Adding/modifying tests.
-*   [ ] **CI/CD:** Changes to workflows or build pipelines.
+Please describe the changes you have made and why they are necessary. Include any relevant context or background information.
 
-## 2. Description
+### Related Issues
 
-Please provide a clear and concise summary of the changes in this Pull Request. Explain *what* was changed and *why*. If this PR addresses an issue, please link it using keywords like `Fixes #123` or `Closes #456`.
+If this pull request addresses or resolves any issues, please list them here. Use the following format:
 
-## 3. Motivation
+- Fixes #<issue_number>
+- Addresses #<issue_number>
 
-*What problem does this PR solve?* 
-*Why is this change necessary?* 
+### Changes Proposed
 
-## 4. Checklist
+A clear and concise description of what was changed.
 
-*(Please check all applicable boxes. If a box is not applicable, please still check it and add a note.)*
+### Screenshots (if applicable)
 
-*   [ ] I have read and followed the **CONTRIBUTING.md** guidelines.
-*   [ ] My code follows the project's coding standards and style guide.
-*   [ ] I have performed a self-review of my own code.
-*   [ ] I have commented my code, particularly in hard-to-understand areas.
-*   [ ] I have made corresponding changes to the documentation (if applicable).
-*   [ ] My changes generate no new warnings or errors in the linter or compiler.
-*   [ ] I have added new tests that prove my fix is effective or that my feature works.
-*   [ ] All new and existing unit tests pass locally with my changes.
-*   [ ] I have ensured all console errors are resolved.
-*   [ ] My changes adhere to the **Apex Technical Authority** standards.
-*   [ ] I have considered the AI Agent directives and ensured compatibility.
+If your changes include visual updates, please provide screenshots to demonstrate the changes.
 
-## 5. Related Issues
+### Additional Information
 
-*Does this PR close any open issues? If so, please list them below.*
-
-Example: `Fixes #123`
-
-## 6. Screenshots/Recordings (if applicable)
-
-*If your changes affect the UI or user experience, please provide visual evidence.*
+Any other information that might be helpful for reviewers.
