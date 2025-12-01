@@ -1,61 +1,58 @@
-# Node.js
-/node_modules
-.pnp
-.pnp.cjs
-.pnp.loader.mjs
-
-# Build artifacts
-/dist
-/build
-/out
-
-# Vite-specific files
-/.vite
-
-# Dependency management
-pnpm-lock.yaml
-package-lock.json
-yarn.lock
-
-# Environment variables
+# Environments
 .env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.env.*
+!.env.example
 
-# Logs
-*.log
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+.wxt/
+out/
+build/
+
+# Compiled files
+*.zip
+*.crx
+*.xpi
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
+logs
+*.log
 
-# Test coverage
-/coverage
-/playwright-report
-/test-results
+# Cache and temporary files
+.vite/
+.eslintcache
+.stylelintcache
+.cache
+coverage/
+.nyc_output/
 
-# Editor directories and files
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE configuration files
+.idea/
 .vscode/*
-!.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.swp
-*.swo
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-.babelrc.json.bak
-.npmrc
-
-# TypeScript cache
-*.tsbuildinfo
-
-# WXT extension build output (if different from dist)
-.wxt/
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
