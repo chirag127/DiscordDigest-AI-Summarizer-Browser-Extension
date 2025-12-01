@@ -1,43 +1,61 @@
-# General
+# Node.js
+/node_modules
+.pnp
+.pnp.cjs
+.pnp.loader.mjs
+
+# Build artifacts
+/dist
+/build
+/out
+
+# Vite-specific files
+/.vite
+
+# Dependency management
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test coverage
+/coverage
+/playwright-report
+/test-results
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# OS-specific files
 .DS_Store
 Thumbs.db
-*.swp
-*.log
+.babelrc.json.bak
+.npmrc
 
-# Node.js / npm
-node_modules/
-dist/
-.npm/
-.yarn/
-yarn-error.log
+# TypeScript cache
+*.tsbuildinfo
 
-# Chrome Extension
-*.crx
-*.pem
-
-# Temporary files
-*~
-# Biome cache
-./.biome
-
-# Test output
-coverage/
-
-# VSCode
-.vscode/
-
-# OS generated files #
-._* 
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Environment configuration files
-.env
-.env.*
-!/sample.env
-
-# WXT specific
+# WXT extension build output (if different from dist)
 .wxt/
-
