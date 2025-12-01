@@ -1,70 +1,67 @@
 ---
-name: '🐛 Bug Report'
-about: 'Report a reproducible bug to help us improve Discord Digest.'
-labels: ['bug', 'triage']
-assignees: []
+name: 🐞 Bug Report (P1-P4 Severity)
+about: Report a failure, defect, or unexpected behavior in the DiscordDigest extension functionality.
+title: "[BUG] Short, actionable summary of the defect"
+labels: ["type: bug", "status: triage", "severity: P3"]
+assignees: ['chirag127']
 ---
 
-## Bug Report: Critical Anomaly Detected
+Thank you for taking the time to report this issue. Before submitting, please ensure you have checked the [Troubleshooting Guide](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/docs/TROUBLESHOOTING.md) and confirmed the bug persists on the latest extension version.
 
-Thank you for taking the time to report a bug. Your diligence helps us maintain the zero-defect standard of Discord Digest. Please provide as much detail as possible to help us reproduce and resolve the issue swiftly.
+## ⚠️ Pre-submission Checklist
+* [ ] I have verified that this bug is not already reported in the [Issues Tracker](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/issues).
+* [ ] I am running the latest version of the `DiscordDigest` extension (Check browser extension settings).
+* [ ] I have confirmed my Gemini API Key is correctly configured and has active quota.
+* [ ] I understand that client-side issues are highly dependent on the Discord UI structure, and changes may cause temporary breakage.
 
-### 🚀 Issue Title
+## 📝 Defect Description
 
-A concise, descriptive title for the bug. Example: `Summarization fails for long message threads`
+A clear and concise description of what the bug is. State *what* happened, not what you think the fix should be.
 
-### 📝 Description of the Anomaly
+## 👣 Steps to Reproduce (MANDATORY)
 
-A clear and concise description of what the bug is. What exactly is not working as expected? When did you first notice this issue?
+Provide clear, numbered steps to reproduce the behavioral defect.
 
-### 🎯 Steps to Reproduce
+1.  [Step 1: e.g., Open Discord in the browser.]
+2.  [Step 2: e.g., Click the DiscordDigest extension icon.]
+3.  [Step 3: e.g., Attempt to summarize a channel with 50+ unread messages.]
+4.  ...
 
-Provide precise, step-by-step instructions on how to reproduce the anomaly. The more detailed, the better. Screenshots or recordings are highly encouraged.
+**Link to a specific message or channel type (if relevant):** [e.g., General Chat vs. Threaded Discussion]
 
-1.  [Step 1: Open Discord, navigate to X channel]
-2.  [Step 2: Install Discord Digest AI, ensure configuration Y is set]
-3.  [Step 3: Trigger summarization for Z messages]
-4.  [Step 4: Observe outcome]
+## ✅ Expected Behavior
 
-### ✅ Expected Behavior
+A clear and concise description of what you expected to happen according to the documentation or common sense.
 
-A clear and concise description of what you expected to happen.
+## ❌ Actual Behavior
 
-### ❌ Actual Behavior
+A clear and concise description of what actually happened (e.g., UI freeze, API error code, incomplete summary). Please include any console errors.
 
-A clear and concise description of what actually happened, including any error messages from the browser console, Discord, or the extension popup.
+## 🖼️ Screenshots or Recordings (If Applicable)
 
-### 📸 Screenshots or Recordings
+If applicable, add screenshots, screen recordings, or animated GIFs to help explain your problem.
 
-If applicable, add screenshots, screen recordings, or GIFs to help explain your problem. Visual evidence significantly accelerates diagnosis.
+## 💻 Environment & Context
+Providing comprehensive details about your setup is crucial for reproducing client-side defects.
 
-### 🖥️ Environment
+| Component | Value |
+| :--- | :--- |
+| **Extension Version** | [e.g., v1.5.0] |
+| **Browser** | [e.g., Chrome 120.0, Firefox 121.0, Edge] |
+| **Operating System** | [e.g., macOS Sonoma 14.3, Windows 11 23H2] |
+| **Discord Theme/Mode** | [e.g., Dark Mode, Light Mode, Custom Theme] |
+| **Gemini API Model Used** | [e.g., gemini-2.5-flash, or default] |
+| **Console Errors** | (Paste relevant stack traces or error messages below) |
 
-Please provide the following details about your operating environment:
+bash
+# Paste console errors here (if any)
 
-*   **Discord Digest AI Version:** `e.g., v1.0.0` (Find this in your browser's extension management page)
-*   **Browser:** `e.g., Chrome 120.0.6099.199 (Official Build) (64-bit)`
-*   **Operating System:** `e.g., macOS Ventura 13.5`, `Windows 11`, `Ubuntu 22.04`
-*   **Discord Client Type:** `e.g., Web App`, `Desktop App (version)`
-*   **Gemini AI Model Used:** `e.g., gemini-3-pro-preview` (If configured and relevant)
 
-### 💡 Additional Context
+## 📈 Impact Assessment (Severity)
 
-Add any other context about the problem here. For example, did this start happening after a specific event (e.g., browser update, Discord update, extension update)? Are there any workarounds you've tried?
+How severely does this bug affect your ability to use the extension?
 
-### Severity and Impact
-
-*   **Critical:** Prevents core functionality or leads to data loss.
-*   **High:** Significantly degrades user experience or causes frequent disruptions.
-*   **Medium:** Annoying, but doesn't block major functionality.
-*   **Low:** Minor cosmetic issues or trivial inconveniences.
-
---- 
-
-### 📚 Pre-submission Checklist
-
-*   [ ] I have searched the existing issues and confirmed this bug has not been reported before.
-*   [ ] I have provided clear, precise, and reproducible steps.
-*   [ ] I have included details about my environment (browser, OS, extension version).
-*   [ ] I have attached screenshots or a recording if it helps clarify the issue.
-*   [ ] I understand that incomplete reports may be closed.
+*   [ ] **P1: Critical/Blocker** (The extension is completely unusable or crashes immediately.)
+*   [ ] **P2: Major** (A core feature is broken, making the extension significantly less useful.)
+*   [ ] **P3: Moderate** (A non-core feature is broken, or a core feature has minor visual/usability flaws.)
+*   [ ] **P4: Minor/Cosmetic** (A typo, misalignment, or minor UI glitch that doesn't impact functionality.)
