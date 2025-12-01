@@ -1,78 +1,76 @@
-# Pull Request Template
+---
+name: "🚀 Feature Request or 🐛 Bug Fix"
+about: "Propose a new feature, improvement, or fix an existing bug"
+title: ""
+labels: ["pending-review"]
+assignees: []
+---
 
-**Important:** Please ensure you have followed the [Contributing Guidelines](/.github/CONTRIBUTING.md).
+## ✨ PR Type
+What kind of change does this Pull Request introduce?
 
-## ✨ What's Changed?
+- [ ] New Feature
+- [ ] Bug Fix
+- [ ] Refactor / Code Quality
+- [ ] Documentation Update
+- [ ] Build / CI/CD / Configuration Update
+- [ ] Performance Improvement
+- [ ] Security Fix
+- [ ] Other (please describe):
 
-*(Briefly describe the main purpose of this Pull Request. What problem does it solve? What new feature does it add?)*
+## 📝 Description
 
-*   **Feature:** *(e.g., Implement AI-powered message summarization)*
-*   **Fix:** *(e.g., Resolve rendering issue on Discord mobile view)*
-*   **Refactor:** *(e.g., Improve state management for user settings)*
-*   **Docs:** *(e.g., Update README with new installation steps)*
-*   **Chore:** *(e.g., Update dependencies, CI/CD adjustments)*
+Please include a summary of the change and the motivation behind it. Explain *what* it does and *why* it's needed. Link to any relevant issues or documentation.
 
-## 🚀 Motivation & Context
+*What problem does this PR solve?*
 
-*(Provide context on why these changes are necessary. Link to relevant issues, discussions, or design documents if applicable.)*
+*How does this PR address the problem?*
 
-**Issue:** #[Issue Number] (if applicable)
+*Are there any relevant dependencies or implications for other parts of the system?*
 
-## 🧠 Technical Details
+## 🔗 Related Issue
 
-*(Provide a high-level overview of the technical approach taken. Mention any new libraries, patterns, or significant architectural changes.)*
+Please link to the issue(s) this PR addresses. Use keywords like `Closes #ISSUE_NUMBER` or `Fixes #ISSUE_NUMBER` to automatically close the issue when the PR is merged.
 
-*   **Architecture:** *(e.g., Utilized WXT for Chrome Extension architecture, integrated Gemini API client)*
-*   **Key Libraries/Tools:** *(e.g., Vite 7, TypeScript 6.x, Vitest, Biome)*
-*   **Patterns:** *(e.g., Applied SOLID principles, CQS for UI interactions)*
+Closes #
 
-## 🧪 How to Test
+## 🧪 Testing Strategy
 
-*(Provide clear, step-by-step instructions on how to test these changes. Be specific about any prerequisites or setup required.)*
+Describe the testing methods used to ensure the quality and correctness of your changes. Include details about unit tests, integration tests, E2E tests, or manual testing steps.
 
-1.  **Clone the repository:** `git clone [repository_url]`
-2.  **Install dependencies:** `npm install` (or `yarn install`, `pnpm install` if applicable)
-3.  **Build the extension:** `npm run build` (or `npm run dev` for development mode)
-4.  **Load unpacked extension:** Follow Chrome's guide for loading unpacked extensions in developer mode.
-5.  **Testing Steps:**
-    *   Navigate to Discord.
-    *   Verify summarized messages appear correctly.
-    *   Test different summarization modes (Brief, Detailed, Key Takeaways).
-    *   Check privacy settings and ensure no data is leaked.
-    *   Run unit tests: `npm run test:unit`
-    *   Run E2E tests: `npm run test:e2e`
+- [ ] Unit tests (Vitest)
+- [ ] Integration tests
+- [ ] End-to-end tests (Playwright)
+- [ ] Manual testing steps (please describe below)
 
-## 📝 Checklist
+### Manual Test Steps (if applicable)
 
-*(Please check off all the applicable items below.)*
+1.  [Step 1]
+2.  [Step 2]
+3.  [Step 3]
 
-*   [ ] My code adheres to the project's coding standards and practices.
-*   [ ] I have added/updated relevant unit or integration tests.
-*   [ ] All new and existing tests pass successfully.
-*   [ ] I have updated the documentation (README, CONTRIBUTING, etc.) as needed.
-*   [ ] I have reviewed and addressed any linting or formatting issues.
-*   [ ] I have considered security implications and followed DevSecOps protocols.
-*   [ ] The changes do not introduce regressions or break existing functionality.
-*   [ ] My code is self-documenting and requires minimal inline comments.
-*   [ ] I have ensured the AI Agent Directives in the README are up-to-date.
+## ✅ Checklist: Professional Readiness
 
-## 📸 Screenshots (Optional)
+Before submitting your Pull Request, please ensure you have completed the following:
 
-*(If applicable, please provide screenshots or GIFs demonstrating the changes.)*
+- [ ] **Code Quality:** My code adheres to the project's coding standards and has been formatted with Biome (`biome format --write .`).
+- [ ] **Linting:** I have run `biome check --apply` and fixed all reported issues.
+- [ ] **Testing:** All existing tests pass (`vitest run`), and I have added new tests for new or changed functionality.
+- [ ] **Coverage:** My changes maintain or improve test coverage.
+- [ ] **Documentation:** I have updated the `README.md` and any other relevant documentation (e.g., in-code comments for complex logic, API docs) to reflect my changes.
+- [ ] **Security:** I have reviewed my code for potential security vulnerabilities (e.g., input sanitization, least privilege, data exposure).
+- [ ] **Performance:** I have considered the performance implications of my changes.
+- [ ] **Accessibility:** If applicable, I have considered accessibility best practices.
+- [ ] **Browser Compatibility:** If applicable, my changes work across supported browsers.
+- [ ] **Conventional Commits:** My commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+- [ ] **Dependencies:** I have updated `package.json` with any new dependencies and run `npm install`.
+- [ ] **Semantic Versioning Impact:** I have considered if this PR warrants a major, minor, or patch version bump.
+- [ ] **Reviewers:** I have requested appropriate reviewers for my changes.
 
-## 🐛 Bug Report (If applicable)
+## 🚀 Deployment Notes (if applicable)
 
-*(If this PR is addressing a bug, please provide details.)*
+Are there any special instructions or considerations for deploying these changes to production?
 
-**Bug:** *(Describe the bug)*
+## 📸 Screenshots (if applicable)
 
-**Steps to Reproduce:**
-1.  ...
-2.  ...
-3.  ...
-
-**Expected Behavior:**
-...
-
-**Actual Behavior:**
-...
+If your changes involve UI modifications, please include screenshots or GIFs to demonstrate the changes.
