@@ -1,101 +1,91 @@
-# Contributing to Discord-Digest-AI-Message-Summarizer-Chrome-Extension
+# Contributing to Discord Digest AI Message Summarizer
 
-Thank you for your interest in contributing to Discord-Digest-AI-Message-Summarizer-Chrome-Extension! We welcome contributions from everyone.
+We welcome contributions to the Discord Digest AI Message Summarizer! To ensure a high-velocity, zero-defect development process, please adhere to the following guidelines.
 
 ## 1. Code of Conduct
 
-Please adhere to our [Code of Conduct](https://github.com/YOUR_USERNAME/Discord-Digest-AI-Message-Summarizer-Chrome-Extension/blob/main/.github/CODE_OF_CONDUCT.md).  We are committed to providing a welcoming and inclusive environment for all contributors.
+This project adheres to the Contributor Covenant Code of Conduct. Please review the full [Code of Conduct](CODE_OF_CONDUCT.md) to understand the expected standards of behavior.
 
-## 2. How to Contribute
+## 2. Contribution Workflow
 
-We appreciate all contributions, whether they are bug fixes, new features, documentation improvements, or anything else. Here's how you can contribute:
+1.  **Fork & Clone:** Fork this repository and clone your fork locally.
+    ```bash
+    git clone git@github.com:<your-username>/Discord-Digest-AI-Message-Summarizer.git
+    cd Discord-Digest-AI-Message-Summarizer
+    git remote add upstream https://github.com/Apex-AI-DevOps/Discord-Digest-AI-Message-Summarizer.git
+    git checkout -b my-feature-branch
+    ```
 
-### 2.1. Found a Bug?
+2.  **Setup:** Ensure your development environment is set up according to the `README.md` instructions.
+    ```bash
+    # Example for TypeScript/Vite/WXT Stack:
+    npm install
+    npm run dev # or relevant build/dev command
+    ```
 
-*   **Search for existing issues:** Before opening a new issue, please search the existing issues to see if someone else has already reported the problem.
-*   **Create a detailed bug report:** If you can't find an existing issue, open a new issue describing the bug.  Include the following:
-    *   A clear and concise description of the bug.
-    *   Steps to reproduce the bug.
-    *   Expected behavior.
-    *   Actual behavior.
-    *   Screenshots or screen recordings (if applicable).
-    *   Your environment (OS, browser, extension version).
+3.  **Develop:** Implement your changes. Focus on modularity, clean code, and adherence to the specified architectural principles (SOLID, CQS, DRY, KISS).
 
-### 2.2. Want to Suggest a Feature?
+4.  **Test:** Write comprehensive tests for your changes. Ensure all existing tests pass and new tests cover success, failure, and edge cases.
+    ```bash
+    # Example for Vitest:
+    npm test
+    ```
 
-*   **Search for existing feature requests:** Check the existing issues to see if your feature idea has already been suggested.
-*   **Create a detailed feature request:** If your feature idea is new, open a new issue describing the feature.  Include the following:
-    *   A clear and concise description of the feature.
-    *   Why the feature is valuable.
-    *   How the feature might work (if possible).
-    *   Screenshots or mockups (if applicable).
+5.  **Lint & Format:** Automatically format and lint your code.
+    ```bash
+    # Example for Biome:
+    npm run lint -- --fix
+    ```
 
-### 2.3. Ready to Contribute Code?
+6.  **Commit:** Use [Conventional Commits](https://www.conventionalcommits.org/) for your commit messages. This ensures clear communication and aids in automated versioning and changelog generation.
+    ```bash
+    # Example:
+    git add .
+    git commit -m "feat: Add multi-language support for summaries"
+    ```
 
-1.  **Fork the repository:** Click the "Fork" button on the repository's GitHub page.
-2.  **Clone your fork:** `git clone https://github.com/YOUR_USERNAME/Discord-Digest-AI-Message-Summarizer-Chrome-Extension.git`
-3.  **Create a new branch:** `git checkout -b feature/your-feature-name` or `git checkout -b fix/your-bug-fix-name`
-4.  **Make your changes:**  Write your code, add tests, and update documentation as needed.
-5.  **Commit your changes:** Use descriptive commit messages following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard.
-    *   `feat: add new feature`
-    *   `fix: correct a bug`
-    *   `docs: update documentation`
-    *   `refactor: code cleanup`
-    *   `test: add unit tests`
-6.  **Push your changes:** `git push origin your-branch-name`
-7.  **Create a pull request:**  Go to the repository's GitHub page and create a pull request from your branch to the `main` branch.  Provide a clear and concise description of your changes in the pull request.
+7.  **Push:** Push your branch to your fork.
+    ```bash
+    git push origin my-feature-branch
+    ```
 
-## 3. Development Setup
+8.  **Pull Request:** Open a Pull Request (PR) against the `main` branch of the `Apex-AI-DevOps/Discord-Digest-AI-Message-Summarizer` repository.
+    *   **Title:** Use a concise, descriptive title (e.g., `feat: Implement User Settings for Summary Length`).
+    *   **Description:** Clearly explain the changes, the problem they solve, and any relevant context.
+    *   **Link Issues:** Reference any related GitHub Issues.
 
-### Prerequisites
+## 3. Branching Strategy
 
-*   Node.js and npm (or yarn/pnpm)
-*   A code editor (VS Code recommended) with TypeScript support.
+*   **`main`:** Represents the latest stable release. Do not commit directly to `main`.
+*   **`develop`:** Integration branch for features. Most development happens here indirectly via PRs.
+*   **Feature Branches:** Prefix with `feat/`, `fix/`, `docs/`, `chore/` (e.g., `feat/ai-model-selection`).
 
-### Installation
+## 4. Technical Standards & Architecture
 
-1.  Clone the repository: `git clone https://github.com/YOUR_USERNAME/Discord-Digest-AI-Message-Summarizer-Chrome-Extension.git`
-2.  Install dependencies: `npm install`
+*   **Language:** TypeScript 6.x
+*   **Build Tool:** Vite 7
+*   **Extension Framework:** WXT
+*   **State Management:** Signals
+*   **Linting/Formatting:** Biome
+*   **Testing:** Vitest (Unit), Playwright (E2E)
+*   **Architecture:** Feature-First (`features/` directory structure), SOLID, CQS, DRY, KISS principles are paramount.
+*   **AI Integration:** Leverage `gemini-3-pro-preview` or `gemini-2.5-pro` as primary, with the defined fallback cascade.
+*   **Security:** Adhere to DevSecOps protocols. Sanitize ALL inputs. Consider OWASP Top 10 2025.
+*   **Code Quality:** Self-documenting code is mandatory. Avoid comments unless explaining the 'why'.
 
-### Running the Extension
+## 5. Pull Request Guidelines
 
-1.  Build the extension: `npm run build`
-2.  Load the extension in Chrome:
-    *   Go to `chrome://extensions/`.
-    *   Enable "Developer mode" in the top right corner.
-    *   Click "Load unpacked".
-    *   Select the `dist` directory in your project.
+*   **Keep PRs Focused:** Each PR should address a single concern.
+*   **Self-Review:** Before submitting, review your own changes thoroughly.
+*   **CI/CD Checks:** Ensure all GitHub Actions (Lint, Test, Build) pass before requesting a review.
+*   **Respond to Feedback:** Address reviewer comments promptly and constructively.
 
-### Testing
+## 6. Reporting Issues
 
-*   Run unit tests: `npm run test`
-*   Run E2E tests: `npm run test:e2e` (requires setting up Playwright)
-
-## 4. Code Style & Conventions
-
-*   **TypeScript:** We use TypeScript for all code.
-*   **Linting:** We use Biome for linting.  Make sure your code passes the linter before submitting a pull request.  Run `npm run lint`.
-*   **Formatting:** We use Biome for formatting. Run `npm run format`.
-*   **Commit Messages:** Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format.
-
-## 5. Branching Model
-
-We use a feature-branch workflow. All changes should be made on a new branch created from `main`.
-
-## 6. Pull Request Guidelines
-
-*   **Keep pull requests focused:** Each pull request should address a single issue or feature.
-*   **Write clear and concise descriptions:** Explain what your changes do and why.
-*   **Include tests:** Add tests to cover your changes.
-*   **Update documentation:** Update any relevant documentation.
-*   **Get your code reviewed:** Request a review from other contributors.
+Please use the provided issue templates in the `.github/ISSUE_TEMPLATE/` directory. Provide detailed information, steps to reproduce, and expected behavior. For security vulnerabilities, please follow the guidelines in `.github/SECURITY.md`.
 
 ## 7. License
 
-By contributing to this project, you agree that your contributions will be licensed under the [CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/) license.
+This project is licensed under the CC BY-NC license. By contributing, you agree that your contributions will also be licensed under this terms.
 
-## 8. Questions?
-
-If you have any questions, please open an issue or contact us.
-
-Thank you for your contributions!  We appreciate your help in making this project better.
+---
