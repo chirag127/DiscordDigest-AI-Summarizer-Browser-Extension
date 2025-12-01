@@ -1,202 +1,239 @@
-# Discord Digest AI: Privacy-First Discord Message Summarizer
+# DiscordDigest-AI-Summarizer-Browser-Extension
 
-[![Build Status](https://img.shields.io/github/actions/workflow/user/your-username/your-repo/main.yml?style=flat-square&logo=githubactions)](https://github.com/your-username/your-repo/actions)
-[![Code Coverage](https://img.shields.io/codecov/c/github/your-username/your-repo.svg?style=flat-square&logo=codecov)](https://codecov.io/gh/your-username/your-repo)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC.svg?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-6449FF.svg?style=flat-square&logo=vite)](https://vitejs.dev/)
-[![Biome](https://img.shields.io/badge/Lint%20&%20Format-Biome.svg?style=flat-square&logo=biome)](https://biomejs.dev/)
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-orange.svg?style=flat-square)](http://creativecommons.org/licenses/by-nc/4.0/)
-[![GitHub stars](https://img.shields.io/github/stars/your-username/your-repo.svg?style=flat-square&logo=github)](https://github.com/your-username/your-repo/stargazers "Star this repo")
+![DiscordDigest Banner](https://raw.githubusercontent.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/main/assets/banner.webp)
 
-**Discord Digest AI** is a cutting-edge, privacy-first Chrome Extension that leverages **client-side Google Gemini AI** to intelligently summarize unread Discord messages. It provides concise digests, boosting your productivity without ever sending your data to a backend server.
+<p align="center">
+  <a href="https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/actions/workflows/ci.yml">
+    <img src="https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/actions/workflows/ci.yml/badge.svg?branch=main&event=push" alt="Build Status" style="max-width: 100%;">
+  </a>
+  <a href="https://codecov.io/gh/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension">
+    <img src="https://codecov.io/gh/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/branch/main/graph/badge.svg?token=CODECOV_TOKEN_PLACEHOLDER" alt="Code Coverage" style="max-width: 100%;">
+  </a>
+  <img src="https://img.shields.io/badge/Tech_Stack-TypeScript%20%7C%20React%20%7C%20WXT%20%7C%20Vite-blueviolet?style=flat-square" alt="Tech Stack" style="max-width: 100%;">
+  <img src="https://img.shields.io/badge/Lint%20%26%20Format-Biome-informational?style=flat-square" alt="Lint & Format" style="max-width: 100%;">
+  <img src="https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey?style=flat-square" alt="License" style="max-width: 100%;">
+  <img src="https://img.shields.io/github/stars/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension?style=flat-square&color=yellow" alt="GitHub Stars" style="max-width: 100%;">
+</p>
 
-Experience **multi-mode summaries** (Brief, Detailed, Key Takeaways) with a **zero-backend architecture**, ensuring absolute user data privacy and security.
+<p align="center">
+  ⭐ Star this Repo! ⭐
+</p>
+
+---
+
+## TL;DR: Instant Discord Summaries, Privacy Guaranteed.
+
+DiscordDigest is a privacy-first, client-side browser extension designed to intelligently summarize unread Discord messages using **Google Gemini AI**. It operates with a zero-backend architecture, ensuring that all user data processing occurs locally within your browser, guaranteeing complete privacy and boosting your productivity by cutting through message clutter.
+
+## Table of Contents
+
+*   [Key Features](#key-features)
+*   [Architecture Overview](#architecture-overview)
+*   [🤖 AI Agent Directives](#ai-agent-directives)
+*   [Getting Started](#getting-started)
+    *   [Prerequisites](#prerequisites)
+    *   [Installation](#installation)
+    *   [Development Setup](#development-setup)
+    *   [Building for Production](#building-for-production)
+*   [Usage](#usage)
+*   [Project Structure](#project-structure)
+*   [Contributing](#contributing)
+*   [Security](#security)
+*   [License](#license)
+*   [Acknowledgements](#acknowledgements)
+
+---
+
+## Key Features
+
+*   **AI-Powered Summarization:** Leverages the advanced capabilities of Google Gemini to condense lengthy Discord conversations into concise summaries.
+*   **Privacy-First Design:** All message processing and AI interactions happen directly in your browser. No Discord data ever leaves your device or touches external servers.
+*   **Client-Side Only:** A true zero-backend solution, ensuring maximum data security and minimal latency.
+*   **Unread Message Focus:** Automatically identifies and prioritizes unread messages for summarization, helping you catch up quickly.
+*   **Cross-Browser Compatibility:** Built with WXT for seamless deployment across Chrome, Firefox, and other Chromium-based browsers.
+*   **Intuitive UI:** A clean and easy-to-use popup interface built with React.
+
+## Architecture Overview
+
+DiscordDigest employs a robust client-side architecture following **Feature-Sliced Design (FSD)** principles, ensuring modularity, scalability, and maintainability. The core components include:
+
+*   **Browser Extension Framework (WXT):** Manages manifest, background scripts, content scripts, and UI pages for cross-browser compatibility.
+*   **React UI:** Powers the interactive popup and options pages, providing a responsive user experience.
+*   **Content Scripts:** Injected into Discord web pages to capture unread messages and relay them securely to the extension's isolated environment.
+*   **Background Service Worker:** Orchestrates the AI summarization process, handles inter-component communication, and manages API key securely.
+*   **Google Gemini API (Client-Side):** Directly interacts with the Gemini model within the browser's context for summarization, without any intermediate server.
+
+mermaid
+graph TD
+    subgraph Browser Context
+        User[User Interaction] --> ExtensionPopup(Extension Popup UI)
+        ExtensionPopup --> BackgroundWorker(Background Service Worker)
+
+        DiscordWebPage[Discord Web Page] --> ContentScript(Content Script)
+        ContentScript -- "Unread Messages" --> BackgroundWorker
+
+        BackgroundWorker -- "Summarization Request" --> GeminiAI(Google Gemini API)
+        GeminiAI -- "Summarized Text" --> BackgroundWorker
+
+        BackgroundWorker -- "Display Summary" --> ExtensionPopup
+    end
+
+*Simplified Architectural Diagram: Data flow for message summarization.*
+
+## 🤖 AI Agent Directives
+
+This project operates under the **Apex Technical Authority** framework (December 2025 Edition), ensuring the highest standards of development, maintainability, and future-proofing. For any modifications, enhancements, or bug fixes, **ALL AI AGENTS MUST ADHERE TO THESE DIRECTIVES.**
 
 <details>
-<summary><strong>🤖 AI Agent Directives & Tech Stack</strong></summary>
+<summary>View Core Directives & Standards</summary>
 
-## 🤖 AI Agent Directives & Tech Stack (December 2025 Standard)
+#### 1. IDENTITY & PRIME DIRECTIVE
+*   **Role:** Senior Principal Software Architect with 40+ years of elite industry experience.
+*   **Context:** December 2025. Building for 2026 standards.
+*   **Output Standard:** EXECUTION-ONLY results.
+*   **Philosophy:** "Zero-Defect, High-Velocity, Future-Proof."
 
-### 1. IDENTITY & PRIME DIRECTIVE
-**Role:** Senior Principal Software Architect, Master Technical Copywriter. **40+ years elite experience**.
-**Context:** December 2025. Building for 2026 standards.
-**Output Standard:** **EXECUTION-ONLY**. No plans; only executed code, updated docs, applied fixes.
-**Philosophy:** "Zero-Defect, High-Velocity, Future-Proof."
+#### 2. INPUT PROCESSING & COGNITION
+*   **Semantic Correction:** Infer technical intent; strictly forbid executing literal typos.
+*   **Logic Anchor:** `README.md` is the Single Source of Truth (SSOT).
+*   **Mandatory MCP Instrumentation:** No guessing, research first (`linkup`/`brave`), validate APIs (`docfork`), reason with `clear-thought-two`.
 
-### 2. AI ORCHESTRATION & GEMINI PROTOCOL
-**Models:** Strictly adheres to the fallback cascade: `gemini-3-pro-preview` -> `gemini-2.5-pro` -> `gemini-2.5-flash` -> `gemini-2.5-flash-lite-preview-09-2025`.
-**Settings:** All models are selectable in user configuration.
+#### 3. CONTEXT-AWARE APEX TECH STACKS (LATE 2025 STANDARDS)
+This project falls under the **WEB / APP / EXTENSION (Modern Frontend)** scenario.
 
-### 3. CONTEXT-AWARE APEX TECH STACKS (DECEMBER 2025 STANDARDS)
-*   **PROJECT TYPE:** WEB / APP / EXTENSION (TypeScript)
-*   **Stack:**
-    *   **Language:** TypeScript 6.x (Strict)
-    *   **Build/Bundle:** Vite 7 (Rolldown)
-    *   **Extension Framework:** WXT (Web Extension Tooling)
-    *   **State Management:** Signals (Standardized)
-    *   **UI Framework (Implied):** React/Vue/Svelte (adaptable, with Vite integration)
-*   **Lint/Test:**
-    *   **Formatter/Linter:** Biome (Speed & Consistency)
-    *   **Unit Testing:** Vitest (Fast, Vite-native)
-    *   **E2E Testing:** Playwright (Robust browser automation)
+*   **PRIMARY SCENARIO: WEB / APP / EXTENSION (TypeScript/React/WXT)**
+    *   **Stack:**
+        *   **Language:** TypeScript 6.x (Strict Mode enabled).
+        *   **Frameworks:** React 19+ for UI components, Vite 7 (using Rolldown) for bundling, WXT for cross-browser extension development, TailwindCSS v4 for utility-first styling.
+        *   **Runtime:** Node.js (LTS).
+        *   **Package Manager:** `npm` (or `pnpm` if available).
+    *   **Architecture:** Adheres to **Feature-Sliced Design (FSD)** principles for clear, scalable, and maintainable module organization. Emphasis on strict layer boundaries (app, processes, pages, widgets, features, entities, shared) to minimize coupling and maximize reusability.
+    *   **State Management:** Prioritize modern, performant solutions like React's Context API or global state libraries utilizing Signals (e.g., Zustand, Jotai, Recoil, or Solid-style signals if applicable for a React environment). Avoid Redux unless explicit legacy reasons.
+    *   **AI Integration:** Deeply integrated with **Google Gemini API** for on-device, client-side message summarization. Ensure robust error handling, rate limiting, and secure API key management (e.g., environment variables, or secure local storage for client-side keys if absolutely necessary, but prioritize user-provided keys). **Absolutely no backend for AI processing.**
+    *   **Browser Extension API:** Strict adherence to WebExtension APIs for maximum compatibility and future-proofing across Chrome, Firefox, and Edge.
 
-### 4. RECURSIVE PERFECTION LOOP
-**Mandate:** Continuous improvement via Analyze -> Fix -> Lint/Format -> Test -> **DECISION GATE** loop. **DO NOT STOP** until the build is perfectly clean.
+#### 4. DEVELOPMENT & VERIFICATION STANDARDS
 
-### 5. CORE ARCHITECTURAL PRINCIPLES
-*   **SOLID MANDATE:** SRP, OCP, LSP, ISP, DIP.
-*   **MODULARITY:** Feature-First Structure (`features/auth`).
-*   **CQS:** Methods are Commands (Action) or Queries (Data), never both.
-*   **12-Factor App:** Config in environment; backing services as attached resources.
+*   **Linter & Formatter:** **Biome** (fast, integrated linter and formatter). All code MUST pass `biome check --apply-unsafe`.
+*   **Testing Frameworks:**
+    *   **Unit/Component Testing:** **Vitest** for fast unit and component tests (using `@testing-library/react` for React components).
+    *   **End-to-End (E2E) Testing:** **Playwright** for robust, cross-browser E2E tests simulating user interactions within the extension popup and content scripts.
+*   **Architectural Patterns:**
+    *   **SOLID Principles:** Ensure Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion are applied.
+    *   **DRY (Don't Repeat Yourself):** Abstract common logic and components.
+    *   **YAGNI (You Aren't Gonna Need It):** Avoid premature optimization or unnecessary features.
+    *   **Privacy-First Design:** All data processing for Discord messages MUST occur client-side. No user data leaves the browser.
+*   **Code Review:** All changes require peer review. Focus on clarity, performance, security, and adherence to these directives.
 
-### 6. CODE HYGIENE & STANDARDS
-*   **SEMANTIC NAMING:** Descriptive verbs, `camelCase` (TS), `snake_case` (Python), `PascalCase` (Classes).
-*   **CLEAN CODE:** Verticality, Guard Clauses, DRY, KISS. **Zero Comments** (only for "Why").
+#### 5. VERIFICATION COMMANDS (MANDATORY PRE-COMMIT/PRE-PUSH)
 
-### 7. RELIABILITY, SECURITY & SUSTAINABILITY
-*   **DEVSECOPS:** Zero Trust (OWASP 2025), SBOMs, Fail Fast, Encryption.
-*   **EXCEPTION HANDLING:** App never crashes; `try-catch-finally` on I/O; retry logic.
-*   **GREEN SOFTWARE:** Rule of Least Power, Efficiency, Lazy Loading.
+All agents must execute and pass these commands locally before submitting any changes:
 
-### 8. COMPREHENSIVE TESTING STRATEGY
-*   **FOLDER STRUCTURE:** `src/` for code, `tests/` for tests.
-*   **TESTING PYRAMID:** Fast, Isolated, Repeatable (F.I.R.S.T.).
-*   **COVERAGE MANDATE:** 1:1 file mapping, Success/Failure/Edge cases. **Zero console errors**.
+bash
+# Install dependencies
+npm install
 
-### 9. UI/UX AESTHETIC SINGULARITY (2026 STANDARD)
-*   **VISUAL LANGUAGE:** Liquid Glass + Neo-Brutalist + Material You 3.0. Fluid animations.
-*   **PERFORMANCE UX:** INP < 200ms. Optimistic UI.
-*   **INTERACTION DESIGN:** Hyper-personalization, Micro-interactions.
-*   **HYPER-CONFIGURABILITY:** All features/colors user-configurable.
+# Run Biome linting and formatting checks (auto-fixes if possible)
+npm run biome:check -- --apply-unsafe
 
-### 10. DOCUMENTATION & VERSION CONTROL
-*   **HERO-TIER README:** BLUF, Live Sync, Visuals, AI Replication Block, **Star ⭐ this Repo**.
-*   **ADVANCED GIT:** Context Archaeology, Conventional Commits, Semantic Versioning.
+# Run unit and component tests
+npm test
 
-### 11. AUTOMATION SINGULARITY (GITHUB ACTIONS)
-*   **CI/CD:** Lint+Test (Push), Audit+SBOM (Security), Release (Versioning+Artifacts), Deps Auto-merge.
+# Build the extension for production (ensures build process is healthy)
+npm run build
 
-### 12. THE ATOMIC EXECUTION CYCLE
-**Loop:** Audit -> Research -> Plan -> Act -> Automate -> Docs -> Verify -> **REITERATE** (until clean) -> Commit.
 
 </details>
 
----
+## Getting Started
 
-## 🚀 Features
+To get a local copy up and running, follow these simple steps.
 
-*   **Intelligent Summarization:** Utilizes Google Gemini AI for accurate and context-aware message digests.
-*   **Privacy-First, Client-Side:** All AI processing happens directly in your browser. No data leaves your machine.
-*   **Multiple Summary Modes:** Choose between Brief, Detailed, or Key Takeaways to suit your needs.
-*   **Productivity Boost:** Quickly catch up on unread messages without manual effort.
-*   **Seamless Integration:** Works directly within your Discord client via Chrome Extension.
-*   **Zero Backend Infrastructure:** Reduces complexity and eliminates privacy risks associated with server-side processing.
+### Prerequisites
 
----
+Ensure you have the following installed:
 
-## 💻 Architecture Overview
+*   [Node.js](https://nodejs.org/) (LTS version recommended)
+*   [npm](https://www.npmjs.com/) (usually comes with Node.js)
+*   A Chromium-based browser (e.g., Chrome, Edge, Brave) or Firefox for testing.
 
-```ascii
-+---------------------+      +------------------------+
-| Chrome Extension    |----->|   Discord DOM          |
-| (TypeScript/Vite)   |      |   (Unread Messages)    |
-+---------------------+      +-----------+------------+
-          |                           |
-          | (Client-side API calls)   |
-          |                           |
-          v                           |
-+---------------------+               |
-|   Gemini AI (JS)    |               |
-| (Local Processing)  |               |
-+---------------------+               |
-          |                           |
-          | (Formatted Summary)       |
-          |                           |
-          v                           |
-+---------------------+               |
-| UI Overlay/Injector | <-------------+
-| (Highlights/ Digests)|
-+---------------------+
-```
-
----
-
-## 🧰 Tech Stack
-
-*   **Language:** TypeScript 6.x
-*   **Build Tool:** Vite 7
-*   **Extension Framework:** WXT (Web Extension Tooling)
-*   **AI Model:** Google Gemini (Client-side JavaScript SDK)
-*   **Linting & Formatting:** Biome
-*   **Testing:** Vitest (Unit), Playwright (E2E)
-
----
-
-## 🛠️ Development Setup
+### Installation
 
 1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/your-repo.git
-    cd your-repo
-    ```
-
+    bash
+    git clone https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension.git
+    cd DiscordDigest-AI-Summarizer-Browser-Extension
+    
 2.  **Install dependencies:**
-    ```bash
+    bash
     npm install
-    # or
-    yarn install
-    # or
-    pnpm install
-    ```
+    
 
-3.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
-    This will build the extension in watch mode and provide instructions for loading it into Chrome.
+### Development Setup
 
----
+To start the development server with hot-reloading:
 
-## 📜 Scripts
+bash
+npm run dev
 
-| Script        | Description                                                |
-|---------------|------------------------------------------------------------|
-| `npm run dev` | Start the Vite development server with hot module replacement. |
-| `npm run build`| Build the production-ready extension.                      |
-| `npm run lint`| Run Biome to lint and format code.                         |
-| `npm run test`| Run Vitest for unit and integration tests.                 |
-| `npm run test:e2e` | Run Playwright for end-to-end tests.                     |
 
----
+This will compile the extension and prepare it for loading into your browser. Follow your browser's specific instructions to load an unpacked extension (e.g., for Chrome: `chrome://extensions` -> `Load unpacked` -> select the `dist` folder generated by `npm run dev`).
 
-## 💡 Principles
+### Building for Production
 
-*   **SOLID:** Adherence to Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion principles.
-*   **DRY (Don't Repeat Yourself):** Code duplication is minimized through abstraction and reusable components.
-*   **KISS (Keep It Simple, Stupid):** Favor straightforward, easily understandable solutions.
-*   **YAGNI (You Ain't Gonna Need It):** Avoid adding functionality until it is explicitly required.
+To create an optimized, production-ready build of the extension:
 
----
+bash
+npm run build
 
-## 🔒 Security & Privacy
 
-This extension is designed with **privacy as its paramount concern**.
+The compiled extension will be located in the `dist` folder, ready for distribution or manual loading.
 
-*   **Client-Side AI:** All AI processing, including the interaction with Google Gemini, is performed locally within your browser. Your Discord messages never leave your machine.
-*   **No Backend Servers:** We do not operate any backend infrastructure for this extension, eliminating a significant attack surface and privacy risk.
-*   **Zero Trust:** All inputs are sanitized, and the extension follows a zero-trust security model.
-*   **Dependency Auditing:** Regular security audits of dependencies are performed via CI/CD pipelines.
+## Usage
 
----
+1.  **Install the extension:** Load the unpacked extension (from the `dist` folder after building or running `dev`) into your preferred browser.
+2.  **Navigate to Discord:** Open the Discord web application.
+3.  **Configure API Key:** Open the extension popup, go to settings, and enter your Google Gemini API key. Ensure this key has access to the Gemini model.
+4.  **Summarize:** The extension will monitor for unread messages. Click the extension icon to open the popup and view summaries of your most recent unread conversations.
 
-## 🛡️ License
+## Project Structure
 
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. You are free to share and adapt this material for non-commercial purposes, provided you give appropriate credit, provide a link to the license, and indicate if changes were made.
 
-See the [LICENSE](LICENSE) file for more details.
+DiscordDigest-AI-Summarizer-Browser-Extension/
+├── .github/                     # GitHub Actions, Issue/PR Templates, Security Policy
+├── public/                      # Static assets (manifest.json, icons)
+├── src/                         # Core source code
+│   ├── assets/                  # Images, custom styles
+│   ├── components/              # Reusable React UI components
+│   ├── content-scripts/         # Scripts injected into Discord pages
+│   ├── features/                # Feature-sliced modules (e.g., summarization, settings)
+│   ├── pages/                   # Extension popup and options UI
+│   ├── shared/                  # Utilities, hooks, types, constants
+│   └── background.ts            # Extension service worker (handles core logic)
+├── wxt.config.ts                # WXT (Web Extensible Toolkit) configuration
+├── vite.config.ts               # Vite bundler configuration
+├── tsconfig.json                # TypeScript compiler configuration
+├── package.json                 # Project dependencies and scripts
+├── README.md                    # This README file
+└── AGENTS.md                    # AI Agent Directives
 
----
 
-## ⭐ Star this Repo!
+## Contributing
 
-If you find Discord Digest AI useful, please consider starring this repository on GitHub! Your support helps drive future development and improvements.
+We welcome contributions to DiscordDigest! Please refer to our [CONTRIBUTING.md](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/CONTRIBUTING.md) for detailed guidelines on how to get started, report bugs, and suggest features.
+
+## Security
+
+For information on how to report security vulnerabilities or to understand our security practices, please review our [SECURITY.md](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/SECURITY.md).
+
+## License
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** License. See the [LICENSE](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/LICENSE) file for details.
+
+## Acknowledgements
+
+*   [Google Gemini API](https://ai.google.dev/) for powerful on-device AI capabilities.
+*   [WXT](https://wxt.dev/) for simplifying cross-browser extension development.
+*   [React](https://react.dev/) for an intuitive UI development experience.
+*   [Vite](https://vitejs.dev/) for a fast and modern development workflow.
+*   [Biome](https://biomejs.dev/) for superior linting and formatting.
