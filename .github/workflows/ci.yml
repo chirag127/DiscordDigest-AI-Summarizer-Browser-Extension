@@ -1,0 +1,70 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Biome Lint & Format Check
+        run: npm run lint:check # Assuming script: biome check --apply-unsafe --json . --no-errors-on-unmatched --verbose
+
+      - name: Run TypeScript Type Check
+        run: npm run typecheck # Assuming script: tsc --noEmit
+
+      - name: Run Unit Tests with Vitest
+        run: npm test --coverage # Assuming script: vitest run --coverage
+
+      - name: Build Browser Extension
+        run: npm run build # Assuming script: wxt build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: discord-digest-extension
+          path: .output/chrome-mv3/
+
+  e2e_tests:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run End-to-End Tests
+        run: npm run test:e2e # Assuming script: playwright test
