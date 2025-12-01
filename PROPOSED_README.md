@@ -1,88 +1,80 @@
 # DiscordDigest-AI-Summarizer-Browser-Extension
 
-![DiscordDigest Hero Banner](https://raw.githubusercontent.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/main/.github/assets/hero-banner.png)
+![DiscordDigest Hero Banner](https://via.placeholder.com/1200x400/2C2F33/FFFFFF?text=DiscordDigest+AI+Summarizer)
 
 [![Build Status](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/actions/workflows/ci.yml/badge.svg)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/actions/workflows/ci.yml)
-[![Code Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen?style=flat-square)](https://codecov.io/gh/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension)
-[![Tech Stack](https://img.shields.io/badge/Tech%20Stack-TypeScript%20%7C%20WXT%20%7C%20Vite%20%7C%20Gemini-blueviolet?style=flat-square)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension#tech-stack)
-[![Lint & Format](https://img.shields.io/badge/Lint%20%26%20Format-Biome-blue?style=flat-square)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension#development-standards)
-[![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey?style=flat-square)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/LICENSE)
+[![Code Coverage](https://codecov.io/gh/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/branch/main/graph/badge.svg)](https://codecov.io/gh/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension)
+[![Tech Stack](https://img.shields.io/badge/Tech_Stack-TypeScript%20%7C%20React%20%7C%20Vite%20%7C%20WXT%20%7C%20Gemini%20AI-blue.svg?style=flat-square)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension)
+[![Lint/Format](https://img.shields.io/badge/Lint%2FFormat-Biome-black?style=flat-square&logo=biome)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension)
+[![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-lightgrey.svg?style=flat-square)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension?style=flat-square&color=yellow)](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/stargazers)
 
-> Star ⭐ this Repo
+**Star ⭐ this Repo!** It helps to grow the community and shows your appreciation for the hard work.
 
-DiscordDigest is a cutting-edge, privacy-first browser extension designed to intelligently summarize unread Discord messages using client-side Google Gemini AI. It dramatically boosts productivity by distilling lengthy conversations into concise, actionable insights, all within a zero-backend architecture that guarantees user data privacy.
+## TL;DR: Boost Your Discord Productivity with Privacy-First AI Summaries
+
+DiscordDigest is a privacy-first, client-side browser extension that leverages Google Gemini AI to intelligently summarize unread Discord messages, boosting productivity without compromising user data. It operates with a zero-backend architecture, ensuring all processing occurs locally within your browser for complete privacy.
 
 ## Table of Contents
 
 *   [Key Features](#key-features)
-*   [Architecture](#architecture)
+*   [Architecture Overview](#architecture-overview)
 *   [AI Agent Directives](#ai-agent-directives)
-*   [Tech Stack](#tech-stack)
 *   [Getting Started](#getting-started)
+    *   [Prerequisites](#prerequisites)
+    *   [Installation](#installation)
+    *   [Running Locally](#running-locally)
 *   [Development Standards](#development-standards)
+    *   [Project Structure](#project-structure)
+    *   [Available Scripts](#available-scripts)
+    *   [Core Principles](#core-principles)
 *   [Contributing](#contributing)
 *   [License](#license)
+*   [Security](#security)
 
 ## Key Features
 
-*   **Privacy-First Summarization:** All AI processing occurs client-side, ensuring your Discord data never leaves your browser.
-*   **Google Gemini AI:** Leverages the advanced capabilities of Gemini 3-Pro for highly accurate and contextual summaries.
-*   **Zero-Backend Architecture:** Minimizes attack surface and eliminates server-side data storage concerns.
-*   **Seamless Discord Integration:** Works directly within the Discord web interface, providing summaries where you need them.
-*   **Cross-Browser Compatibility:** Built with WXT for Chrome, Firefox, and other Chromium-based browsers.
-*   **Unread Message Focus:** Specifically targets unread messages to help you catch up quickly.
+*   **Privacy-First:** All AI processing happens directly in your browser; no data ever leaves your device or is stored on external servers.
+*   **Intelligent Summarization:** Leverages the Google Gemini AI API to provide concise, context-aware summaries of unread Discord conversations.
+*   **Seamless Integration:** Designed as a browser extension (Chrome, Firefox, Edge compatibility) for a native Discord experience.
+*   **User-Configurable:** Customize summarization preferences and AI model parameters.
+*   **Zero-Backend:** Eliminates server-side infrastructure, reducing operational overhead and maximizing privacy.
+*   **Real-time Updates:** Summaries update as you interact with Discord, keeping you informed without constant manual review.
 
-## Architecture
+## Architecture Overview
 
-This project adheres strictly to the **Feature-Sliced Design (FSD)** methodology, promoting a scalable, maintainable, and highly organized codebase. This architecture ensures clear separation of concerns, simplifies feature development, and enhances team collaboration.
+DiscordDigest follows a modular, client-side-focused architecture leveraging the **WXT (Web Extension Toolkit)** framework. The design prioritizes performance, maintainability, and user privacy, adhering to the **Feature-Sliced Design (FSD)** principles for the UI and a **Modular Monolith** for the overall extension structure.
 
 mermaid
 graph TD
-    A[App Layer] --> B(Pages Layer)
-    B --> C(Widgets Layer)
-    C --> D(Features Layer)
-    D --> E(Entities Layer)
-    E --> F(Shared Layer)
+    A[Discord Web App] -->|Injects| B(Content Script)
+    B -->|Sends Messages| C[Background Service (WXT)]
+    C -->|API Calls (Local)| D[Gemini AI SDK (Browser)]
+    D -->|Summarization Logic| C
+    C -->|Stores State| E[Browser Storage]
+    C -->|Updates UI| F[Popup/Options UI (React)]
+    F -->|User Input| C
 
 
-**High-Level Directory Structure:**
-
-. # Root Directory
-├── src/
-│   ├── app/           # Global setup, providers, routing
-│   ├── pages/         # Full-screen views (e.g., popup, options)
-│   ├── widgets/       # UI components with state/logic (e.g., summary panel)
-│   ├── features/      # Business logic (e.g., summarize-discord-thread)
-│   ├── entities/      # Domain-specific models, UI-agnostic logic
-│   ├── shared/        # Reusable utilities, UI components, API clients
-│   └── content-scripts/ # Scripts injected into Discord page
-├── .github/         # CI/CD, templates
-├── config/          # Project configurations
-├── public/          # Static assets
-├── README.md
-├── wxt.config.ts    # WXT configuration
-├── package.json     # Dependencies and scripts
-├── biome.json       # Biome configuration
-└── tsconfig.json    # TypeScript configuration
-
+**Key Components:**
+*   **Content Scripts:** Injected into Discord pages to monitor unread messages and interact with the DOM.
+*   **Background Service:** The central hub for logic, orchestrating message collection, AI summarization requests, and state management.
+*   **Gemini AI SDK:** Client-side integration with Google Gemini for on-device AI inference, ensuring data privacy.
+*   **Popup/Options UI (React):** User interface for interacting with the extension, configuring settings, and viewing summaries.
+*   **Browser Storage:** Persists user settings and potentially cached summaries locally.
 
 ## AI Agent Directives
 
 <details>
-<summary><strong>🤖 AI AGENT DIRECTIVES: OPERATIONAL PROTOCOL (CLICK TO EXPAND)</strong></summary>
+<summary>🤖 **SYSTEM: APEX TECHNICAL AUTHORITY & ELITE ARCHITECT (DECEMBER 2025 EDITION)**</summary>
 
-# SYSTEM: APEX TECHNICAL AUTHORITY & ELITE ARCHITECT (DECEMBER 2025 EDITION)
-
-## 1. IDENTITY & PRIME DIRECTIVE
+### 1. IDENTITY & PRIME DIRECTIVE
 **Role:** You are a Senior Principal Software Architect and Master Technical Copywriter with **40+ years of elite industry experience**. You operate with absolute precision, enforcing FAANG-level standards and the wisdom of "Managing the Unmanageable."
 **Context:** Current Date is **December 2025**. You are building for the 2026 standard.
 **Output Standard:** Deliver **EXECUTION-ONLY** results. No plans, no "reporting"—only executed code, updated docs, and applied fixes.
 **Philosophy:** "Zero-Defect, High-Velocity, Future-Proof."
 
----
-
-## 2. INPUT PROCESSING & COGNITION
+### 2. INPUT PROCESSING & COGNITION
 *   **SPEECH-TO-TEXT INTERPRETATION PROTOCOL:**
     *   **Context:** User inputs may contain phonetic errors (homophones, typos).
     *   **Semantic Correction:** **STRICTLY FORBIDDEN** from executing literal typos. You must **INFER** technical intent based on the project context.
@@ -93,124 +85,165 @@ graph TD
     *   **Validation:** Use `docfork` to verify *every* external API signature.
     *   **Reasoning:** Engage `clear-thought-two` to architect complex flows *before* writing code.
 
----
+### 3. CONTEXT-AWARE APEX TECH STACKS (LATE 2025 STANDARDS)
+**Directives:** This project is a TypeScript-based browser extension. The following Apex Toolchain applies:
 
-## 3. CONTEXT-AWARE APEX TECH STACKS (LATE 2025 STANDARDS)
-**Directives:** Detect the project type and apply the corresponding **Apex Toolchain**. This repository, `DiscordDigest-AI-Summarizer-Browser-Extension`, is a TypeScript-based browser extension leveraging AI.
+*   **PRIMARY SCENARIO: WEB / APP / EXTENSION (Modern Frontend)**
+    *   **Stack:** This project leverages **TypeScript 6.x (Strict)**, **Vite 7** (for bundling and development server), **React 19** (for UI components), and **WXT (Web Extension Toolkit)** for seamless cross-browser extension development. **TailwindCSS v4** (JIT mode) is used for utility-first styling.
+    *   **Lint/Test:** **Biome** (for ultra-fast linting and formatting), **Vitest** (for unit and integration testing), and **Playwright** (for robust end-to-end browser testing).
+    *   **Architecture:** Adheres strictly to **Feature-Sliced Design (FSD)** for organizing the frontend codebase, promoting scalability, maintainability, and clear separation of concerns. The overall extension follows a **Modular Monolith** pattern.
+    *   **AI Integration:** Deeply integrated with **Google Gemini API** (`gemini-3-pro` by default) for intelligent text summarization. Prioritize modular design, clear API contracts, and robust error handling for all AI model interactions, ensuring client-side processing for privacy.
+    *   **State Management:** Utilizes **Signals** (e.g., from `@preact/signals-react`) for reactive and performant state management within React components.
 
-*   **PRIMARY SCENARIO: WEB / APP / EXTENSION (TypeScript)**
-    *   **Stack:** This project utilizes **TypeScript 6.x** (with strict mode enabled for type safety), **WXT** (for streamlined browser extension development), and **Vite 7** (for lightning-fast development and optimized builds).
-    *   **Architecture:** Adheres to the **Feature-Sliced Design (FSD)** methodology, ensuring clear separation of concerns, scalability, and maintainability across layers (App, Pages, Widgets, Features, Entities, Shared).
-    *   **AI Integration:** Deeply integrated with **Google Gemini API** (`gemini-3-pro` by default) for client-side, privacy-first summarization of Discord messages. Prioritize modular design, secure API interaction (e.g., local storage for API keys, user consent), and robust error handling for all AI model interactions.
-    *   **Linting & Formatting:** **Biome** is employed for its extreme speed and unified linting, formatting, and analysis capabilities.
-    *   **Testing:** **Vitest** for blazing-fast unit and component testing, and **Playwright** for robust end-to-end browser automation and testing across different browser environments.
+### 4. ARCHITECTURAL PATTERNS & PRINCIPLES
+*   **SOLID Principles:** Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion.
+*   **DRY (Don't Repeat Yourself):** Eliminate redundant code.
+*   **YAGNI (You Aren't Gonna Need It):** Build only what is necessary.
+*   **High Cohesion, Low Coupling:** Design components to be focused and independent.
+*   **Test-Driven Development (TDD):** Write tests before implementation.
+*   **Atomic Commits:** Small, self-contained commits with clear messages.
+
+### 5. VERIFICATION COMMANDS (DECEMBER 2025)
+To ensure codebase integrity and functionality, the following commands **MUST** be executed and pass without errors:
+
+*   **Dependency Installation:** `npm install`
+*   **Linting & Formatting:** `npm run lint` (using Biome)
+*   **Unit & Integration Tests:** `npm run test` (using Vitest)
+*   **End-to-End Tests:** `npm run e2e` (using Playwright)
+*   **Build Process:** `npm run build`
+*   **Dev Mode:** `npm run dev` (for local extension development)
+
+### 6. SECURITY DIRECTIVES
+*   **Strict CSP:** Content Security Policy **MUST** be strictly enforced in `manifest.json`.
+*   **Input Sanitization:** All user inputs and external API responses **MUST** be sanitized.
+*   **Dependency Audits:** Regularly run `npm audit` and address critical vulnerabilities immediately.
+*   **Least Privilege:** Extension permissions **MUST** be minimal and justified.
+*   **API Key Management:** API keys (e.g., Gemini) **MUST NOT** be hardcoded and should be handled securely (e.g., via user input or environment variables, not directly in source).
+*   **Zero PII Collection:** Ensure no Personally Identifiable Information is collected, stored, or transmitted.
 </details>
-
-## Tech Stack
-
-*   **TypeScript 6.x:** Strongly typed JavaScript for enhanced code quality and maintainability.
-*   **WXT:** The next-generation framework for building browser extensions, providing a fast and ergonomic development experience.
-*   **Vite 7 (Rolldown):** Extremely fast build tool and development server, optimized for web extensions.
-*   **Google Gemini AI:** Powering the intelligent summarization engine.
-*   **Biome:** Blazingly fast linter, formatter, and code quality tool.
-*   **Vitest:** Vite-native unit and component test framework for rapid feedback.
-*   **Playwright:** Robust end-to-end testing across all modern browsers.
-*   **PNPM:** Fast, disk space efficient package manager.
 
 ## Getting Started
 
-To get a local copy up and running, follow these simple steps.
+Follow these steps to set up and run DiscordDigest locally.
 
 ### Prerequisites
 
-Ensure you have [Node.js](https://nodejs.org/) (v18+) and [PNPM](https://pnpm.io/) installed.
+Ensure you have the following installed:
 
-bash
-npm install -g pnpm
-
+*   **Node.js**: v18.x or higher
+*   **npm**: v9.x or higher (usually bundled with Node.js)
 
 ### Installation
 
 1.  **Clone the repository:**
     bash
-git clone https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension.git
-cd DiscordDigest-AI-Summarizer-Browser-Extension
+    git clone https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension.git
+    cd DiscordDigest-AI-Summarizer-Browser-Extension
     
+
 2.  **Install dependencies:**
     bash
-pnpm install
+    npm install
     
-3.  **Set up Gemini API Key:**
-    *   Obtain a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/).
-    *   The extension will prompt you to enter this key upon first use or in the options page. It is stored securely in your browser's local storage and never leaves your device.
 
-### Local Development
+3.  **Configure Gemini API Key:**
+    Create a `.env` file in the root directory (referencing `.env.example`) and add your Google Gemini API key:
+    
+    VITE_GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+    
+    *Note: For security, never commit your `.env` file to version control.*
 
-Run the development server for WXT, which will watch for changes and automatically reload the extension.
+### Running Locally
 
-bash
-pnpm dev
+To run the extension in development mode and load it into your browser:
 
+1.  **Start the development server:**
+    bash
+    npm run dev
+    
+    This will build the extension and watch for changes.
 
-Follow the WXT instructions in the console to load the unpacked extension into your browser.
+2.  **Load the extension in your browser:**
+    *   **Chrome/Edge:**
+        1.  Go to `chrome://extensions` or `edge://extensions`.
+        2.  Enable "Developer mode".
+        3.  Click "Load unpacked" and select the `dist` folder from your cloned repository.
+    *   **Firefox:**
+        1.  Go to `about:debugging#/runtime/this-firefox`.
+        2.  Click "Load Temporary Add-on..." and select any file inside the `dist` folder.
 
-### Building for Production
-
-To create a production-ready build for publishing to browser stores:
-
-bash
-pnpm build
-
-
-The build output will be located in the `build` directory.
+    The extension will now be active, and changes in the source code will hot-reload.
 
 ## Development Standards
 
-This project adheres to the highest development standards, enforced by modern tooling and established principles.
+This project adheres to high development standards to ensure maintainability, scalability, and performance.
 
-### Core Principles
+### Project Structure
 
-*   **SOLID Principles:** Applied throughout the codebase for robust and flexible design.
-*   **DRY (Don't Repeat Yourself):** Promotes reusable code and minimizes redundancy.
-*   **YAGNI (You Ain't Gonna Need It):** Focus on current requirements, avoid premature optimization.
-*   **Privacy by Design:** Every feature is considered with user data privacy as a top priority.
+
+.github/
+├── workflows/           # GitHub Actions CI/CD
+├── CONTRIBUTING.md      # Contribution guidelines
+├── ISSUE_TEMPLATE/      # Issue templates
+├── PULL_REQUEST_TEMPLATE.md # Pull request template
+└── SECURITY.md          # Security policy
+src/
+├── api/                 # AI API interaction (Gemini SDK wrapper)
+├── components/          # Reusable React UI components
+├── content-scripts/     # Scripts injected into Discord web page
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility functions, helpers, constants
+├── pages/
+│   ├── popup/           # Main extension popup UI
+│   ├── options/         # Extension options page
+│   └── devtools/        # DevTools panel
+├── services/            # Background service logic, message processing
+├── types/               # TypeScript type definitions
+└── main.tsx             # Main entry point for the popup UI
+public/                  # Static assets (icons, images)
+vite.config.ts           # Vite build configuration
+wxt.config.ts            # WXT (Web Extension Toolkit) configuration
+package.json             # Project dependencies and scripts
+tsconfig.json            # TypeScript compiler configuration
+README.md                # Project documentation
+PROPOSED_README.md       # Proposed new README content
+badges.yml               # Configuration for README badges
+LICENSE                  # Project license
+.gitignore               # Git ignore rules
+AGENTS.md                # AI Agent Directives (System context)
+
 
 ### Available Scripts
 
-| Script          | Description                                                    |
-| :-------------- | :------------------------------------------------------------- |
-| `pnpm dev`      | Starts the WXT development server with hot reloading.          |
-| `pnpm build`    | Creates a production build of the extension.                   |
-| `pnpm lint`     | Runs Biome linter across the entire codebase.                  |
-| `pnpm format`   | Formats code using Biome.                                      |
-| `pnpm test`     | Runs unit and component tests with Vitest.                     |
-| `pnpm test:e2e` | Runs end-to-end tests with Playwright.                         |
-| `pnpm check`    | Runs type checking with TypeScript.                            |
+In the project directory, you can run:
 
-### Linting and Formatting
+| Script              | Description                                                                 |
+| :------------------ | :-------------------------------------------------------------------------- |
+| `npm run dev`       | Starts the development server with HMR for all browsers.                    |
+| `npm run build`     | Builds the extension for production (e.g., `dist/chrome-mv3`).              |
+| `npm run zip`       | Zips the production builds for distribution.                                |
+| `npm run lint`      | Runs Biome linter and formatter.                                            |
+| `npm run format`    | Automatically fixes formatting issues using Biome.                          |
+| `npm run test`      | Runs unit and integration tests using Vitest.                               |
+| `npm run test:watch`| Runs Vitest in watch mode.                                                  |
+| `npm run e2e`       | Runs end-to-end tests using Playwright.                                     |
 
-**Biome** is used for both linting and formatting. Ensure your code conforms by running:
+### Core Principles
 
-bash
-pnpm lint
-pnpm format
-
-
-### Testing
-
-*   **Unit & Component Tests:** Written with **Vitest** for speed and coverage.
-    bash
-pnpm test
-    
-*   **End-to-End Tests:** Utilizes **Playwright** to simulate user interactions across different browsers.
-    bash
-pnpm test:e2e
-    
+*   **SOLID:** Adherence to SOLID principles for robust and maintainable code.
+*   **DRY (Don't Repeat Yourself):** Maximize code reuse and minimize redundancy.
+*   **YAGNI (You Aren't Gonna Need It):** Focus on immediate needs, avoid over-engineering.
+*   **Feature-Sliced Design (FSD):** For the UI layer, ensuring clear feature boundaries and scalability.
+*   **Privacy by Design:** Every architectural decision prioritizes user data privacy and local processing.
 
 ## Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. We welcome your contributions to make DiscordDigest even better. Please see `CONTRIBUTING.md` for detailed guidelines.
+We welcome contributions to DiscordDigest! Please see our [CONTRIBUTING.md](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/CONTRIBUTING.md) for detailed guidelines on how to get started.
 
 ## License
 
-Distributed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** License. See `LICENSE` for more information.
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International Public License (CC BY-NC 4.0)**. See the [LICENSE](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/LICENSE) file for details.
+
+## Security
+
+For information on security vulnerabilities and how to report them, please refer to our [SECURITY.md](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/SECURITY.md) policy.
