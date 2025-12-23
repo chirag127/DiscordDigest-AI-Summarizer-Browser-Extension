@@ -1,6 +1,19 @@
-import { GoogleGenerativeAI } from "@google/genai";
+// src/core/ai-engine/index.ts
+
 import { getEnabledModels } from "../../features/settings/utils";
 import { storage } from "../storage";
+
+// Define the structure of the API response for better type safety
+interface GeminiStreamChunk {
+  candidates: Array<{
+    content: {
+      parts: Array<{
+        text: string;
+      }>;
+      role: string;
+    };
+  }>;
+}
 
 interface ModelErrorState {
   failedAt: number;
@@ -11,8 +24,6 @@ const COOL_OFF_PERIOD_MS = 60 * 1000; // 1 minute cool-off
 
 export class AIEngine {
   private static instance: AIEngine;
-  private client: GoogleGenerativeAI | null = null;
-  private currentApiKey: string | null = null;
   private modelErrorStates: Map<string, ModelErrorState> = new Map();
 
   private constructor() {}
@@ -22,19 +33,6 @@ export class AIEngine {
       AIEngine.instance = new AIEngine();
     }
     return AIEngine.instance;
-  }
-
-  private async getClient(): Promise<GoogleGenerativeAI> {
-    const apiKey = await storage.get("apiKey");
-    if (!apiKey) {
-      throw new Error("API Key not found. Please configure it in settings.");
-    }
-
-    if (!this.client || this.currentApiKey !== apiKey) {
-      this.client = new GoogleGenerativeAI(apiKey);
-      this.currentApiKey = apiKey;
-    }
-    return this.client;
   }
 
   private isModelAvailable(modelId: string): boolean {
@@ -62,10 +60,12 @@ export class AIEngine {
     prompt: string,
     onChunk: (text: string) => void,
   ): Promise<string> {
-    const client = await this.getClient();
-    const enabledModels = await getEnabledModels();
+    const apiKey = await storage.get("apiKey");
+    if (!apiKey) {
+      throw new Error("API Key not found. Please configure it in settings.");
+    }
 
-    // Filter out cooling-off models
+    const enabledModels = await getEnabledModels();
     const availableModels = enabledModels.filter((m) => this.isModelAvailable(m.id));
 
     if (availableModels.length === 0) {
@@ -79,37 +79,76 @@ export class AIEngine {
     for (const modelConfig of availableModels) {
       try {
         console.log(`Attempting generation with model: ${modelConfig.id}`);
-        // @ts-expect-error - SDK types
-        const model = client.getGenerativeModel({ model: modelConfig.id });
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelConfig.id}:streamGenerateContent?key=${apiKey}`;
 
-        const result = await model.generateContentStream(prompt);
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+          }),
+        });
 
+        if (!response.ok || !response.body) {
+          const errorBody = await response.text();
+          console.error(`API Error Response for ${modelConfig.id}:`, errorBody);
+          const error = new Error(`HTTP error! status: ${response.status} - ${errorBody}`);
+          (error as any).status = response.status;
+          throw error;
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
         let fullText = "";
-        for await (const chunk of result.stream) {
-          const chunkText = chunk.text();
-          fullText += chunkText;
-          onChunk(fullText);
+        let buffer = "";
+
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || ""; // Keep the last, potentially incomplete line
+
+          for (const line of lines) {
+            if (!line.startsWith("data: ")) continue;
+
+            const jsonStr = line.substring(5).trim();
+            if (!jsonStr) continue;
+
+            try {
+              const parsed = JSON.parse(jsonStr) as GeminiStreamChunk;
+              const textPart = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (textPart) {
+                fullText += textPart;
+                onChunk(fullText);
+              }
+            } catch (e) {
+              console.warn("Failed to parse stream chunk:", jsonStr, e);
+            }
+          }
         }
 
         return fullText; // Success
       } catch (error: any) {
         console.error(`Model ${modelConfig.id} failed:`, error);
 
-        // Check for 429 or 5xx
-        if (error.status === 429 || error.status >= 500 || error.message?.includes("429")) {
+        if (error.status === 429 || error.status >= 500) {
           this.markModelFailed(modelConfig.id);
         }
 
         lastError = error;
-        // Continue to next model
       }
     }
 
     throw lastError || new Error("Failed to generate summary with all available models.");
   }
 
+  // No longer needs client-specific logic
   public resetClient() {
-    this.client = null;
-    this.currentApiKey = null;
+    // This can be a no-op now, or could be used to clear caches if any were added.
   }
 }

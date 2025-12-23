@@ -11,12 +11,13 @@
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
-    "compile": "tsc --noEmit",
-    "test": "vitest",
+    "check:type": "tsc --noEmit",
+    "lint:fix": "npx biome check --apply-unsafe",
+    "test:unit": "vitest",
+    "test:e2e": "playwright test",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@google/genai": "^1.30.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.555.0",

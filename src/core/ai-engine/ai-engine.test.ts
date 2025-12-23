@@ -1,4 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+// src/core/ai-engine/ai-engine.test.ts
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AIEngine } from "./index";
 import { storage } from "../storage";
 import { getEnabledModels } from "../../features/settings/utils";
@@ -7,106 +9,140 @@ import { getEnabledModels } from "../../features/settings/utils";
 vi.mock("../storage");
 vi.mock("../../features/settings/utils");
 
-const mockGenerateContentStream = vi.fn();
-const mockGetGenerativeModel = vi.fn(() => ({
-  generateContentStream: mockGenerateContentStream,
-}));
+// Helper to create a mock streaming response
+function createMockStream(chunks: string[]): ReadableStream {
+  const encoder = new TextEncoder();
+  let i = 0;
+  return new ReadableStream({
+    pull(controller) {
+      if (i < chunks.length) {
+        const chunkContent = `data: ${JSON.stringify({
+          candidates: [{ content: { parts: [{ text: chunks[i] }] } }],
+        })}\n\n`;
+        controller.enqueue(encoder.encode(chunkContent));
+        i++;
+      } else {
+        controller.close();
+      }
+    },
+  });
+}
 
-// Fix mock constructor
-const MockGoogleGenerativeAI = vi.fn(() => ({
-    getGenerativeModel: mockGetGenerativeModel,
-}));
-
-vi.mock("@google/genai", () => ({
-  GoogleGenerativeAI: MockGoogleGenerativeAI,
-}));
+const mockFetch = vi.fn();
+vi.stubGlobal("fetch", mockFetch);
 
 describe("AIEngine", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    // Reset singleton instance (hacky but necessary for singleton testing without exposing reset)
-    // @ts-expect-error - Accessing private static
+    // @ts-expect-error - Accessing private static for test reset
     AIEngine.instance = null;
 
-    // Setup default mocks
-    // @ts-expect-error - Mocking
+    // Setup default mocks for dependencies
     vi.mocked(storage.get).mockResolvedValue("fake-api-key");
-    // @ts-expect-error - Mocking
     vi.mocked(getEnabledModels).mockResolvedValue([
       { id: "primary", name: "Primary", isEnabled: true, order: 1 },
       { id: "backup", name: "Backup", isEnabled: true, order: 2 },
     ]);
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should throw if no API key is found", async () => {
-    // @ts-expect-error - Mocking
     vi.mocked(storage.get).mockResolvedValue(null);
     const engine = AIEngine.getInstance();
-    await expect(engine.generateSummaryStream("test", () => {})).rejects.toThrow("API Key not found");
+    await expect(engine.generateSummaryStream("test", () => {})).rejects.toThrow(
+      "API Key not found. Please configure it in settings.",
+    );
   });
 
   it("should stream content from the first available model", async () => {
-    const stream = {
-      stream: (async function* () {
-        yield { text: () => "Hello " };
-        yield { text: () => "World" };
-      })(),
-    };
-    mockGenerateContentStream.mockResolvedValue(stream);
+    mockFetch.mockResolvedValueOnce(
+      new Response(createMockStream(["Hello ", "World"]), { status: 200 }),
+    );
 
     const engine = AIEngine.getInstance();
     const onChunk = vi.fn();
     const result = await engine.generateSummaryStream("prompt", onChunk);
 
-    expect(mockGetGenerativeModel).toHaveBeenCalledWith({ model: "primary" });
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("primary:streamGenerateContent"),
+      expect.any(Object),
+    );
     expect(onChunk).toHaveBeenCalledWith("Hello ");
     expect(onChunk).toHaveBeenCalledWith("Hello World");
     expect(result).toBe("Hello World");
   });
 
   it("should fallback to second model if first fails with 429", async () => {
-    // First call fails
-    mockGenerateContentStream.mockRejectedValueOnce({ status: 429 });
-
+    // First call fails with a rate limit error
+    mockFetch.mockResolvedValueOnce(new Response("Too many requests", { status: 429 }));
     // Second call succeeds
-    const stream = {
-      stream: (async function* () {
-        yield { text: () => "Backup success" };
-      })(),
-    };
-    mockGenerateContentStream.mockResolvedValueOnce(stream);
+    mockFetch.mockResolvedValueOnce(
+      new Response(createMockStream(["Backup success"]), { status: 200 }),
+    );
 
     const engine = AIEngine.getInstance();
-    const onChunk = vi.fn();
-    const result = await engine.generateSummaryStream("prompt", onChunk);
+    const result = await engine.generateSummaryStream("prompt", () => {});
 
-    expect(mockGetGenerativeModel).toHaveBeenCalledWith({ model: "primary" });
-    expect(mockGetGenerativeModel).toHaveBeenCalledWith({ model: "backup" });
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("primary:streamGenerateContent"),
+      expect.any(Object),
+    );
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("backup:streamGenerateContent"),
+      expect.any(Object),
+    );
     expect(result).toBe("Backup success");
   });
 
   it("should skip cooled-off models", async () => {
+    const advanceTimeBy = (ms: number) => vi.advanceTimersByTime(ms);
+    vi.useFakeTimers();
+
     // First run: Fail primary to trigger cool-off
-    mockGenerateContentStream.mockRejectedValueOnce({ status: 429 });
-    const stream = {
-        stream: (async function* () { yield { text: () => "Backup" }; })(),
-    };
-    mockGenerateContentStream.mockResolvedValueOnce(stream);
+    mockFetch.mockResolvedValueOnce(new Response("Rate limited", { status: 429 }));
+    mockFetch.mockResolvedValueOnce(new Response(createMockStream(["Backup"]), { status: 200 }));
 
     const engine = AIEngine.getInstance();
-    await engine.generateSummaryStream("prompt", () => {}); // Triggers failure on primary
+    await engine.generateSummaryStream("prompt", () => {});
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("primary:streamGenerateContent"),
+      expect.any(Object),
+    );
 
     // Second run immediately after
-    mockGenerateContentStream.mockClear();
-    mockGetGenerativeModel.mockClear();
-    mockGenerateContentStream.mockResolvedValue({
-        stream: (async function* () { yield { text: () => "Backup Again" }; })(),
-    });
+    mockFetch.mockClear();
+    mockFetch.mockResolvedValueOnce(
+      new Response(createMockStream(["Backup Again"]), { status: 200 }),
+    );
 
     await engine.generateSummaryStream("prompt", () => {});
 
-    // Should NOT have called primary again
-    expect(mockGetGenerativeModel).not.toHaveBeenCalledWith({ model: "primary" });
-    expect(mockGetGenerativeModel).toHaveBeenCalledWith({ model: "backup" });
+    // Should NOT have called primary again because it's cooling off
+    expect(mockFetch).not.toHaveBeenCalledWith(
+      expect.stringContaining("primary:streamGenerateContent"),
+      expect.any(Object),
+    );
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("backup:streamGenerateContent"),
+      expect.any(Object),
+    );
+
+    // Third run after cool-off period
+    advanceTimeBy(60 * 1000 + 1); // Advance time past the cool-off period
+    mockFetch.mockClear();
+    mockFetch.mockResolvedValueOnce(new Response(createMockStream(["Primary is back"]), { status: 200 }));
+
+    await engine.generateSummaryStream("prompt", () => {});
+
+    // Should now call primary again
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining("primary:streamGenerateContent"),
+      expect.any(Object),
+    );
+
+    vi.useRealTimers();
   });
 });

@@ -6,10 +6,6 @@ We are thrilled you're considering contributing to **DiscordDigest-AI-Summarizer
 
 To ensure a smooth contribution process, please familiarize yourself with the following guidelines. We operate on a 'Zero-Defect, High-Velocity, Future-Proof' philosophy.
 
-### 📜 Code of Conduct
-
-We expect all contributors to adhere to our [Code of Conduct](https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension/blob/main/.github/CODE_OF_CONDUCT.md). Please read it carefully.
-
 ### 💡 How Can I Contribute?
 
 There are many ways you can contribute to DiscordDigest-AI-Summarizer-Browser-Extension:
@@ -27,53 +23,40 @@ DiscordDigest is a client-side browser extension built with cutting-edge web tec
 
 Ensure you have the following installed on your system:
 
-*   [Node.js](https://nodejs.org/) (LTS version recommended)
-*   [npm](https://www.npmjs.com/) (Node Package Manager) or `uv` (our preferred package manager)
+*   [Node.js](https://nodejs.org/) (LTS version 20+)
+*   [npm](https://www.npmjs.com/) (Node Package Manager)
 
 ### Installation
 
 1.  **Clone the Repository:**
-    bash
+    ```bash
     git clone https://github.com/chirag127/DiscordDigest-AI-Summarizer-Browser-Extension.git
     cd DiscordDigest-AI-Summarizer-Browser-Extension
-    
+    ```
 
 2.  **Install Dependencies:**
-    We recommend using `uv` for speed and efficiency, but `npm` also works.
-    bash
-    # Using uv (recommended)
-    uv pip install -r requirements.txt # If any Python backend or tools were present, though primarily JS/TS
-    uv requirements.txt # For JS/TS, uv install or npm install
-    uv install
-    
-    # Or using npm
+    ```bash
     npm install
-    
-
-3.  **Environment Variables:**
-    Create a `.env` file in the root directory and add any necessary API keys, especially for Google Gemini AI integration (if client-side keys are used or proxies are involved in development).
-    ini
-    # Example: Google Gemini API Key (if applicable for direct client-side use or testing)
-    VITE_GEMINI_API_KEY=your_gemini_api_key_here
-    
+    ```
 
 ### Running the Development Server
 
-This project uses Vite and WXT for rapid development.
+This project uses WXT for rapid development.
 
-bash
-# Start the development server (for a browser extension, this usually means watching files and building for a browser extension reload)
+```bash
+# Start the development server and watch for changes
 npm run dev
+```
 
-
-Follow the instructions from `npm run dev` to load the unpacked extension into your browser (Chrome, Firefox, etc.).
+Follow the instructions from the `dev` script to load the unpacked extension into your browser (Chrome, Firefox, etc.).
 
 ### Building for Production
 
-bash
+```bash
 npm run build
+```
 
-This will generate the production-ready extension files in the `dist/` directory.
+This will generate the production-ready extension files in the `.output/` directory.
 
 ## 💻 Coding Guidelines
 
@@ -81,32 +64,33 @@ We adhere to a strict set of coding standards to maintain consistency, performan
 
 *   **Language:** TypeScript (Strict)
 *   **Frameworks:** React (UI), WXT (Extension Development), Vite (Build Tool)
-*   **AI Integration:** Google Gemini API (client-side focused)
-*   **Architecture:** Feature-Sliced Design (FSD) for clear separation of concerns, scalability, and modularity.
-*   **Linting & Formatting:** We use `Biome` for lightning-fast linting and formatting. Please ensure your code passes Biome checks.
-    bash
-    npm run lint
-    npm run format
-    
+*   **Styling:** TailwindCSS v4
+*   **AI Integration:** Direct REST calls to Google Gemini API
+*   **Architecture:** Feature-Sliced Design (FSD)
+*   **Linting & Formatting:** We use `Biome` for lightning-fast linting and formatting. Ensure your code passes all checks before committing.
+    ```bash
+    # Check for linting and format issues
+    npx biome check .
+    # Apply automatic fixes
+    npm run lint:fix
+    ```
 *   **Testing:**
-    *   **Unit Tests:** Written with `Vitest` to cover individual components and utility functions.
-    *   **End-to-End (E2E) Tests:** Written with `Playwright` to simulate user interactions within the browser extension environment.
-    bash
+    *   **Unit Tests:** Written with `Vitest`.
+    *   **End-to-End (E2E) Tests:** Written with `Playwright`.
+    ```bash
     # Run unit tests
     npm run test:unit
-    # Run E2E tests (requires browser installation)
+    # Run E2E tests
     npm run test:e2e
-    # Run all tests
-    npm run test
-    
+    ```
 
 ## 📝 Commit Messages
 
-We follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for clear and standardized commit history. This aids in automated changelog generation and understanding project evolution.
+We follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) for clear and standardized commit history.
 
 **Examples:**
 
-*   `feat: add Discord message summarization`
+*   `feat: add discord message summarization`
 *   `fix(ui): resolve summary display overflow`
 *   `docs: update contributing guidelines`
 *   `chore(deps): upgrade wxt to latest version`
@@ -119,14 +103,9 @@ When submitting a Pull Request (PR), please keep the following in mind:
 2.  **Create a New Branch:** Base your work on the `main` branch and create a new, descriptively named branch (e.g., `feat/summarizer-button`, `fix/login-bug`).
 3.  **Atomic Commits:** Make small, focused commits that each address a single concern.
 4.  **Descriptive PR Title:** Use a clear and concise title that summarizes the changes.
-5.  **Detailed Description:** Provide a comprehensive description of your changes, including:
-    *   What problem does this PR solve?
-    *   How was it solved?
-    *   Any relevant design decisions or architectural considerations.
-    *   Screenshots or GIFs for UI changes.
-    *   References to related issues (e.g., `Closes #123`).
+5.  **Detailed Description:** Provide a comprehensive description of your changes, including references to related issues (e.g., `Closes #123`).
 6.  **Tests:** Ensure all existing tests pass and add new tests for your features or bug fixes. Code coverage should not decrease.
-7.  **Linting & Formatting:** Run `npm run lint` and `npm run format` to ensure your code adheres to our style guidelines.
+7.  **Linting & Formatting:** Run the linter to ensure your code adheres to our style guidelines.
 8.  **Review Process:** Your PR will be reviewed by maintainers. Please be responsive to feedback and make necessary adjustments.
 
 ### Pull Request Template

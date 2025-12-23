@@ -29,16 +29,16 @@ jobs:
         run: npm ci
 
       - name: Run Biome Lint & Format Check
-        run: npm run lint:check # Assuming script: biome check --apply-unsafe --json . --no-errors-on-unmatched --verbose
+        run: npx biome check .
 
       - name: Run TypeScript Type Check
-        run: npm run typecheck # Assuming script: tsc --noEmit
+        run: npm run check:type
 
       - name: Run Unit Tests with Vitest
-        run: npm test --coverage # Assuming script: vitest run --coverage
+        run: npm run test:unit -- --coverage
 
       - name: Build Browser Extension
-        run: npm run build # Assuming script: wxt build
+        run: npm run build
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -67,4 +67,4 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run End-to-End Tests
-        run: npm run test:e2e # Assuming script: playwright test
+        run: npm run test:e2e
